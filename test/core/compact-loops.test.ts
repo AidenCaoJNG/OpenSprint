@@ -159,6 +159,40 @@ describe('rule harvesting', () => {
       const r = extractCitations('dec-001 DECISION-001 DSPRICING', known);
       expect(r.cited).toEqual([]);
     });
+
+    // DEC-036 moves decisions to semantic ids and keeps DEC-001-DEC-044
+    // numbered permanently, so both forms must match forever. This is not a
+    // migration window.
+    describe('semantic decision ids (DEC-036)', () => {
+      const mixed = new Set(['DEC-001', 'DEC-SCOPED-SEAL', 'DS-PRICING']);
+
+      it('finds a semantic decision id', () => {
+        expect(extractCitations('// guards DEC-SCOPED-SEAL', mixed).cited).toEqual(['DEC-SCOPED-SEAL']);
+      });
+
+      it('still finds a numbered decision id, permanently', () => {
+        expect(extractCitations('// guards DEC-001', mixed).cited).toEqual(['DEC-001']);
+      });
+
+      it('finds both forms side by side', () => {
+        const r = extractCitations('DEC-001 and DEC-SCOPED-SEAL', mixed);
+        expect(r.cited).toEqual(['DEC-001', 'DEC-SCOPED-SEAL']);
+      });
+
+      it('reports an unknown semantic id as unresolved rather than ignoring it', () => {
+        const r = extractCitations('DEC-NEVER-EXISTED', mixed);
+        expect(r.cited).toEqual([]);
+        expect(r.unresolved).toEqual(['DEC-NEVER-EXISTED']);
+      });
+
+      it('does not match a one-character suffix or lowercase', () => {
+        expect(extractCitations('DEC-X dec-scoped-seal', new Set(['DEC-X'])).cited).toEqual([]);
+      });
+
+      it('does not mistake a numbered id for a semantic one', () => {
+        expect(extractCitations('DEC-045', new Set(['DEC-045'])).cited).toEqual(['DEC-045']);
+      });
+    });
   });
 
   describe('buildRuleIndex', () => {
@@ -187,8 +221,9 @@ describe('rule harvesting', () => {
   // ═══════════════════════════════════════════════════════════
 
   describe('deriveOpenLoops', () => {
-    it('defines exactly seven kinds, by explicit list', () => {
+    it('defines exactly eighteen kinds, by explicit list', () => {
       expect([...OPEN_LOOP_KINDS]).toEqual([
+        // properties of the record graph
         'constraint-unanswered',
         'constraint-unasserted',
         'decision-unguarded',
@@ -196,6 +231,26 @@ describe('rule harvesting', () => {
         'decision-on-superseded',
         'record-unclassified',
         'constraint-unmeasurable',
+        // properties of a measure — the ex-post half (DS-MEASURE-ANATOMY)
+        'measure-unasserted',
+        'measure-unexposed',
+        'bar-without-neighbour',
+        // a record its hat's sections cannot select
+        'record-without-objective',
+        // an approach with no decision descending from it
+        'strategy-unimplemented',
+        // a risk with no planned work behind it
+        'exposure-unmitigated',
+        // a measure nobody has judged
+        'measure-unattested',
+        // an attestation citing nothing addressable
+        'evidence-unresolvable',
+        // a bar in prose, in a hat whose bars take a form
+        'bar-without-form',
+        // what an attestation left unanswered — properties of a change
+        'reversibility-unstated',
+        'blast-radius-unstated',
+        'raci-unassigned',
       ]);
     });
 

@@ -51,7 +51,7 @@
               inherit (finalAttrs) pname version src;
               pnpm = pkgs.pnpm_9;
               fetcherVersion = 3;
-              hash = "sha256-9s2kdvd7svK4hofnD66HkDc86WTQeayfF5y7L2dmjNg=";
+              hash = "sha256-RYtAbPr5H9Ph1SQX5FZi0PL1XWPyTsoBCPHuympDC2Q=";
             };
 
             nativeBuildInputs = with pkgs; [
@@ -76,7 +76,7 @@
               homepage = "https://github.com/Fission-AI/OpenSpec";
               license = licenses.mit;
               maintainers = [ ];
-              mainProgram = "openspec";
+              mainProgram = "opensprint";
             };
           });
         }
@@ -85,7 +85,7 @@
       apps = forAllSystems (system: {
         default = {
           type = "app";
-          program = "${self.packages.${system}.default}/bin/openspec";
+          program = "${self.packages.${system}.default}/bin/opensprint";
         };
       });
 

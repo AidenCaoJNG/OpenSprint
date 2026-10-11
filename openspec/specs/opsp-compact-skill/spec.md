@@ -234,3 +234,85 @@ The skill SHALL choose a diagram format from what the project already does, and 
 - **THEN** the skill SHALL use ASCII
 - **AND** the reason SHALL be that ASCII survives a terminal, a diff, and an agent's context with no renderer
 
+### Requirement: A strategy states a position, never a mechanism
+The rendering contract SHALL require a strategy to state where the system sits and to cite the decisions implementing it, without describing how they work, so that the compiled view stays readable by its audience and does not become a second description of the system.
+
+#### Scenario: Rendering a strategy
+- **WHEN** the renderer compiles a strategy
+- **THEN** it SHALL state the position taken
+- **AND** it SHALL cite the `dev` or `devops` decisions that implement it
+- **AND** it SHALL NOT describe the mechanism those decisions chose
+
+#### Scenario: The altitude needs no new guard
+- **WHEN** the renderer is tempted to state a mechanism in a strategy
+- **THEN** the existing citation requirement SHALL prevent it
+- **AND** the reason SHALL be that a mechanism detail belongs to a decision the hat does not own, so there is no record it may cite for the claim
+
+#### Scenario: An unimplemented strategy
+- **WHEN** a strategy has no decision to cite
+- **THEN** the renderer SHALL say so rather than inventing an implementation
+- **AND** the gap SHALL also appear as a `strategy-unimplemented` open loop
+
+### Requirement: Only an attested claim may be stated as present-tense fact
+The rendering contract SHALL distinguish three authorities and SHALL permit an unqualified present-tense claim about a property of the system only where the record is attested.
+
+#### Scenario: The three authorities
+- **WHEN** the renderer compiles a claim
+- **THEN** it SHALL rest on one of: a **decided** record, an **observed** path, or an **attested** record
+- **AND** the contract SHALL state that a decision binds but may not be true yet, that an observation is true but may be an accident, and that an attestation ages
+
+#### Scenario: Rendering a decided but unattested claim
+- **WHEN** a record is decided and not attested
+- **THEN** the claim SHALL be written as a decision, citing the record
+- **AND** SHALL NOT be written as a statement about the running system
+
+#### Scenario: Rendering an attested claim
+- **WHEN** a record is attested
+- **THEN** the claim MAY be stated in the present tense
+- **AND** SHALL carry the attestation date
+
+#### Scenario: The renderer is told which
+- **WHEN** the renderer compiles a section
+- **THEN** the plan SHALL have supplied each record's authority
+- **AND** the renderer SHALL NOT infer it from the record's content
+
+### Requirement: A strategy cell renders SWOT-like, compiled from its decisions
+The system SHALL instruct the renderer to render four parts beneath a cited strategy — strength, weakness, opportunity and threat — each compiled from a named section of the decision record, so that a reader learns what the position cost without opening the ADR.
+
+#### Scenario: The four parts and their sources
+- **WHEN** the renderer is instructed on a strategy cell
+- **THEN** the instruction SHALL name all four parts
+- **AND** each SHALL name the section of the ADR it is read from
+
+#### Scenario: Opportunity is a redefinition
+- **WHEN** the instruction defines opportunity
+- **THEN** it SHALL state that this is a deliberate redefinition
+- **AND** it SHALL say that standard SWOT means external upside
+
+#### Scenario: Compiled, never authored
+- **WHEN** a part has no source in the decision record
+- **THEN** the instruction SHALL require the renderer to write that it is unrecorded
+- **AND** it SHALL forbid opening the implementation to work the part out
+
+### Requirement: A bar is written in the form its hat's bars take
+The system SHALL instruct the renderer that a bar's statement takes one of two BDD forms chosen by hat, so that a bar can be assessed from pipeline output.
+
+#### Scenario: The two forms
+- **WHEN** the renderer is instructed on a bar
+- **THEN** a product bar SHALL be a user story
+- **AND** a maintainer bar SHALL be given / when / then
+
+#### Scenario: Why the split is not a preference
+- **WHEN** the instruction explains the split
+- **THEN** it SHALL state that a maintainer bar as a user story is an awkward fiction
+- **AND** it SHALL state that a bar in given/when/then form is already a test specification
+
+#### Scenario: Hats that commit to no bar
+- **WHEN** the hat is one that describes a system rather than committing to a bar
+- **THEN** the instruction SHALL state that it declares no form
+
+#### Scenario: The rest of the anatomy stays prose
+- **WHEN** the instruction covers posture, evidence and exposure
+- **THEN** it SHALL state that they stay prose
+- **AND** the reason SHALL be that structure there produces filled-in templates rather than thought
+

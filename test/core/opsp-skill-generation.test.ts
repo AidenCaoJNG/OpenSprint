@@ -30,12 +30,12 @@ vi.mock('../../src/prompts/searchable-multi-select.js', () => ({
 
 describe('OPSP skill generation', () => {
   describe('template functions', () => {
-    it('should return 14 OPSP skill templates (4 utility + 7 lifecycle + 2 reconciliation + 1 compaction)', () => {
+    it('should return 19 OPSP skill templates (5 utility + 11 lifecycle + 2 reconciliation + 1 compaction)', () => {
       const templates = getOpspSkillTemplates();
-      expect(templates).toHaveLength(14);
+      expect(templates).toHaveLength(19);
       expect(templates.map(t => t.workflowId)).toEqual([
-        'driver', 'decide', 'tree', 'rebuild-assess',
-        'opsp-explore', 'opsp-propose', 'opsp-apply', 'opsp-archive', 'opsp-review', 'opsp-reexplore', 'opsp-knockdown',
+        'driver', 'decide', 'tree', 'rebuild-assess', 'migrate',
+        'opsp-explore', 'opsp-backlog', 'opsp-triage', 'opsp-propose', 'opsp-apply', 'opsp-attest', 'opsp-archive', 'opsp-review', 'opsp-reexplore', 'opsp-repropose', 'opsp-knockdown',
         'opsp-rebase', 'opsp-abandon',
         'opsp-compact',
       ]);
@@ -48,21 +48,21 @@ describe('OPSP skill generation', () => {
       }
     });
 
-    it('should return 14 OPSP command contents (4 utility + 7 lifecycle + 2 reconciliation + 1 compaction)', () => {
+    it('should return 19 OPSP command contents (5 utility + 11 lifecycle + 2 reconciliation + 1 compaction)', () => {
       const contents = getOpspCommandContents();
-      expect(contents).toHaveLength(14);
+      expect(contents).toHaveLength(19);
       expect(contents.map(c => c.id)).toEqual([
-        'driver', 'decide', 'tree', 'rebuild-assess',
-        'opsp-explore', 'opsp-propose', 'opsp-apply', 'opsp-archive', 'opsp-review', 'opsp-reexplore', 'opsp-knockdown',
+        'driver', 'decide', 'tree', 'rebuild-assess', 'migrate',
+        'opsp-explore', 'opsp-backlog', 'opsp-triage', 'opsp-propose', 'opsp-apply', 'opsp-attest', 'opsp-archive', 'opsp-review', 'opsp-reexplore', 'opsp-repropose', 'opsp-knockdown',
         'opsp-rebase', 'opsp-abandon',
         'opsp-compact',
       ]);
     });
 
-    it('should have correct OPSP workflow IDs (14 total)', () => {
+    it('should have correct OPSP workflow IDs (19 total)', () => {
       expect(OPSP_WORKFLOW_IDS).toEqual([
-        'driver', 'decide', 'tree', 'rebuild-assess',
-        'opsp-explore', 'opsp-propose', 'opsp-apply', 'opsp-archive', 'opsp-review', 'opsp-reexplore', 'opsp-knockdown',
+        'driver', 'decide', 'tree', 'rebuild-assess', 'migrate',
+        'opsp-explore', 'opsp-backlog', 'opsp-triage', 'opsp-propose', 'opsp-apply', 'opsp-attest', 'opsp-archive', 'opsp-review', 'opsp-reexplore', 'opsp-repropose', 'opsp-knockdown',
         'opsp-rebase', 'opsp-abandon',
         'opsp-compact',
       ]);
@@ -79,10 +79,10 @@ describe('OPSP skill generation', () => {
     it('should have lifecycle skill templates with correct names', () => {
       const templates = getOpspSkillTemplates();
       const lifecycleNames = templates
-        .filter(t => ['opsp-explore', 'opsp-propose', 'opsp-apply', 'opsp-archive', 'opsp-review', 'opsp-reexplore', 'opsp-knockdown'].includes(t.workflowId))
+        .filter(t => ['opsp-explore', 'opsp-backlog', 'opsp-triage', 'opsp-propose', 'opsp-apply', 'opsp-attest', 'opsp-archive', 'opsp-review', 'opsp-reexplore', 'opsp-repropose', 'opsp-knockdown'].includes(t.workflowId))
         .map(t => t.template.name);
       expect(lifecycleNames).toEqual([
-        'opensprint-explore', 'opensprint-propose', 'opensprint-apply', 'opensprint-archive', 'opensprint-review', 'opensprint-reexplore', 'opensprint-knockdown',
+        'opensprint-explore', 'opensprint-backlog', 'opensprint-triage', 'opensprint-propose', 'opensprint-apply', 'opensprint-attest', 'opensprint-archive', 'opensprint-review', 'opensprint-reexplore', 'opensprint-repropose', 'opensprint-knockdown',
       ]);
     });
 
@@ -129,23 +129,31 @@ describe('OPSP skill generation', () => {
       expect(apply!.template.instructions).toContain('/opsx:explore');
     });
 
-    it('should have opsp-reexplore skill template with initiative-scoped instructions', () => {
+    it('should have opsp-reexplore skill template that writes nothing', () => {
       const templates = getOpspSkillTemplates();
       const reexplore = templates.find(t => t.workflowId === 'opsp-reexplore');
       expect(reexplore).toBeDefined();
       expect(reexplore!.template.name).toBe('opensprint-reexplore');
       expect(reexplore!.dirName).toBe('opensprint-reexplore');
-      // Initiative context loading
+      // The goal rung, symmetric with explore
       expect(reexplore!.template.instructions).toContain('opensprint/initiatives/');
-      expect(reexplore!.template.instructions).toContain('Completed');
-      expect(reexplore!.template.instructions).toContain('Pending');
-      // Plan revision mechanics
-      expect(reexplore!.template.instructions).toContain('/opsx:propose');
-      expect(reexplore!.template.instructions).toContain('/opsx:explore');
-      expect(reexplore!.template.instructions).toContain('corrective');
+      expect(reexplore!.template.instructions).toContain('/opsp:explore');
+      expect(reexplore!.template.instructions).toContain('/opsp:backlog');
       expect(reexplore!.template.instructions).toContain('superseded');
       // Guardrails
-      expect(reexplore!.template.instructions).toContain('Stop at propose');
+      expect(reexplore!.template.instructions).toMatch(/Writes nothing/);
+    });
+
+    it('should have opsp-repropose skill template with the strategy-rung mechanics', () => {
+      const templates = getOpspSkillTemplates();
+      const repropose = templates.find(t => t.workflowId === 'opsp-repropose');
+      expect(repropose).toBeDefined();
+      expect(repropose!.template.name).toBe('opensprint-repropose');
+      expect(repropose!.dirName).toBe('opensprint-repropose');
+      expect(repropose!.template.instructions).toContain('opensprint/initiatives/');
+      expect(repropose!.template.instructions).toContain('superseded-by');
+      expect(repropose!.template.instructions).toContain('## Measures');
+      expect(repropose!.template.instructions).toContain('Stop at proposed');
     });
 
     it('should have opsp-knockdown skill template with progressive compaction instructions', () => {

@@ -32,5 +32,4 @@ hats:
   product: {}
   dev: {}
   devops: {}
-  maintainer:
-    roles: [bar, posture, evidence, exposure]
+  maintainer: {}

@@ -314,3 +314,149 @@ The system SHALL report the repository's existing diagram habit, so that a rende
 - **WHEN** `opensprint compact plan --json` runs
 - **THEN** the output SHALL carry the detected convention and the files it was detected from
 
+### Requirement: A section may select on objective
+The system SHALL allow a section to select records by `objective`, independently of `roles`, so that one hat's records can be partitioned along two axes at once.
+
+#### Scenario: Selecting on objective alone
+- **WHEN** a section declares `objective` and no `roles`
+- **THEN** it SHALL take every record of its input kind declaring that objective
+
+#### Scenario: Selecting on objective and roles together
+- **WHEN** a section declares both `objective` and `roles`
+- **THEN** a record SHALL be taken only if it declares that objective **and** at least one of those roles
+
+#### Scenario: A section declaring no objective
+- **WHEN** a section declares no `objective`
+- **THEN** it SHALL NOT filter on objective
+- **AND** its behaviour SHALL be unchanged from before objectives existed
+
+#### Scenario: Objective participates in the section input hash
+- **WHEN** a record's objective changes
+- **THEN** the sections that selected it SHALL restage
+- **AND** sections for other objectives SHALL remain fresh
+
+### Requirement: A section may declare its own heading
+The system SHALL allow a section to declare a `heading`, used in place of the one derived from its name.
+
+#### Scenario: A declared heading
+- **WHEN** a section declares `heading: "Privacy, Retention & Legal"`
+- **THEN** that string SHALL be rendered as the section's heading
+- **AND** the section's `name` SHALL remain the identifier used in configuration and provenance
+
+#### Scenario: No declared heading
+- **WHEN** a section declares no `heading`
+- **THEN** the heading SHALL be derived from the name by title-casing its hyphen-separated words, as before
+
+### Requirement: A record carries a citation authority
+The system SHALL compute, for each record, which authority a compiled claim about it may carry, so that the renderer knows whether a present-tense statement is licensed.
+
+#### Scenario: The authorities
+- **WHEN** the system computes a record's authority
+- **THEN** it SHALL be `attested` or `decided`
+- **AND** `observed` SHALL remain a property of a claim citing a path rather than of a record
+
+#### Scenario: Attested requires both a date and evidence
+- **WHEN** a record's `### Posture` carries `attested-on`
+- **AND** its measure carries a populated `### Evidence`
+- **THEN** its authority SHALL be `attested`
+
+#### Scenario: A verdict without evidence
+- **WHEN** a posture states a verdict and an attestation date but the measure carries no evidence
+- **THEN** the authority SHALL be `decided`
+- **AND** the reason SHALL be that a verdict nothing asserts is an opinion
+
+#### Scenario: Evidence without attestation
+- **WHEN** a measure carries evidence but no attestation date
+- **THEN** the authority SHALL be `decided`
+
+#### Scenario: A record with no measure
+- **WHEN** a record carries no `## Measures` section
+- **THEN** its authority SHALL be `decided`
+
+#### Scenario: Authority is computed, never declared
+- **WHEN** a record declares an authority in frontmatter
+- **THEN** it SHALL be ignored
+- **AND** the authority SHALL be derived from what the measure carries, so it cannot drift from the evidence
+
+#### Scenario: Attestation ages without expiring
+- **WHEN** an attestation date is far in the past
+- **THEN** the authority SHALL still be `attested`
+- **AND** the date SHALL be carried so a reader can judge it
+- **AND** no threshold SHALL be applied, because none has been decided
+
+### Requirement: The plan reports each record's authority
+The system SHALL carry each staged record's authority in `compact plan --json`, alongside its id and path.
+
+#### Scenario: Authority in the plan
+- **WHEN** `compact plan --json` stages a record
+- **THEN** the entry SHALL carry `authority`
+- **AND** SHALL carry the verdict, attester and date where the record states them
+
+### Requirement: Sealing is scopeable to named hats
+The system SHALL allow sealing to be restricted to named hats, so that a tool compiling one hat cannot record provenance for another.
+
+#### Scenario: Sealing one hat
+- **WHEN** `compact seal` is given one or more hat names
+- **THEN** only those hats' sections SHALL be resealed
+- **AND** every other manifest entry SHALL be carried forward unchanged, including its recorded input hash
+
+#### Scenario: Sealing everything
+- **WHEN** `compact seal` is given no hat names
+- **THEN** every hat SHALL be in scope
+- **AND** the reason SHALL be that archive legitimately closes an initiative with all hats in scope
+
+#### Scenario: An unknown hat name
+- **WHEN** a named hat is not in the project's registry
+- **THEN** a warning SHALL name it and the accepted values
+- **AND** the command SHALL NOT fail
+
+#### Scenario: A skipped hat keeps its staleness
+- **WHEN** a hat is out of scope and its inputs have changed
+- **THEN** its entries SHALL retain the input hash recorded previously
+- **AND** `check` SHALL continue to report those sections as stale
+
+### Requirement: Sealing never blesses a section it did not render
+The system SHALL refuse to reseal a hat whose rendered view is unchanged, because recording current inputs against stale prose makes the gate pass when it should fail.
+
+#### Scenario: A view that was not re-rendered
+- **WHEN** a hat's view file hashes to the value already recorded in the manifest
+- **THEN** its entries SHALL be carried forward unchanged
+- **AND** SHALL NOT be resealed against current inputs
+- **AND** this SHALL hold whether or not the hat was named in scope
+
+#### Scenario: A view that was re-rendered
+- **WHEN** a hat's view file hashes to a different value than the manifest records
+- **THEN** its entries SHALL be resealed with current inputs and observations
+
+#### Scenario: A hat sealed for the first time
+- **WHEN** a hat has no existing manifest entries
+- **THEN** it SHALL be sealed
+- **AND** the absence of a prior hash SHALL NOT be treated as an unchanged view
+
+#### Scenario: A hat with no view on disk
+- **WHEN** a hat has records but no rendered view
+- **THEN** it SHALL be reported as unrendered, as before
+- **AND** its entries SHALL record a null output hash
+
+### Requirement: The plan is filterable by hat
+The system SHALL allow `compact plan` to be restricted to named hats, so that a caller compiling one hat can ask only about that hat.
+
+#### Scenario: Filtering to one hat
+- **WHEN** `compact plan` is given one or more hat names
+- **THEN** only sections belonging to those hats SHALL be reported
+- **AND** this SHALL apply to both the human-readable and JSON forms
+
+#### Scenario: No filter
+- **WHEN** no hat names are given
+- **THEN** every hat SHALL be reported, as before
+
+#### Scenario: An unknown hat name
+- **WHEN** a named hat is not in the project's registry
+- **THEN** a warning SHALL name it and the accepted values
+- **AND** the command SHALL NOT fail
+
+#### Scenario: Open loops are not filtered
+- **WHEN** the plan is filtered by hat
+- **THEN** the open loops it reports SHALL be unaffected
+- **AND** the reason SHALL be that a loop belongs to the records rather than to a view section
+

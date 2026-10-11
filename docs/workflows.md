@@ -1,451 +1,329 @@
 # Workflows
 
-This guide covers common workflow patterns for OpenSpec and when to use each one. For basic setup, see [Getting Started](getting-started.md). For command reference, see [Commands](commands.md).
+OpenSprint ships nineteen agent workflows. They are invoked by name in your agent
+(`/opsp:propose`), not from the shell — the CLI underneath them is in the
+[reference](#cli-reference) at the bottom.
 
-## Philosophy: Actions, Not Phases
+## The spine
 
-Traditional workflows force you through phases: planning, then implementation, then done. But real work doesn't fit neatly into boxes.
-
-OPSX takes a different approach:
-
-```text
-Traditional (phase-locked):
-
-  PLANNING ────────► IMPLEMENTING ────────► DONE
-      │                    │
-      │   "Can't go back"  │
-      └────────────────────┘
-
-OPSX (fluid actions):
-
-  proposal ──► specs ──► design ──► tasks ──► implement
+```
+   REAL WORLD ── clients · regulators · incidents · cost · the market
+        │
+        │   /opsp:driver  (external truth)    /opsp:knockdown  (brownfield)
+        ▼
+  ┌──────────────────────────────────────────────────────────────────┐
+  │ 1  IDEATE                        /opsp:explore · /opsp:backlog   │
+  │    high-level ideation — what and why                            │
+  │    explore writes nothing; backlog flushes the brainstorm        │
+  │    PRODUCES  the initiative  (O + G)                             │
+  │    state: exploring                                              │
+  └──────────────────────────────────────────────────────────────────┘
+        ▼                                                           ▲ c
+  ┌──────────────────────────────────────────────────────────────────┐
+  │ 2  TRIAGE · BRAINSTORM · PROPOSE  /opsp:triage · /opsp:propose   │
+  │    pick up a backlog item, brainstorm strategy, then formalize   │
+  │    PRODUCES  driver-specs · ADRs · milestones  (S + M)           │
+  │    >> the BAR is written here. ex ante. <<                       │
+  │    state: proposed                                               │
+  └──────────────────────────────────────────────────────────────────┘
+        ▼                                                           ▲ b
+  ┌──────────────────────────────────────────────────────────────────┐
+  │ 3  BUILD                               /opsp:apply → opsx        │
+  │    per milestone: explore → propose → apply → verify → archive   │
+  │    escalation pauses here — a hat handoff, not an interruption   │
+  │    PRODUCES  code · tests · rules · more ADRs                    │
+  │    state: building                                               │
+  └──────────────────────────────────────────────────────────────────┘
+        ▼                                                           ▲ a
+  ┌──────────────────────────────────────────────────────────────────┐
+  │ 4  HAND OVER                           /opsp:apply closes        │
+  │    every milestone done · nothing judged yet                     │
+  │    the dev hat comes off; product or maintainer picks one up     │
+  │    state: ready-for-attestation                                  │
+  └──────────────────────────────────────────────────────────────────┘
+        ▼
+  ┌──────────────────────────────────────────────────────────────────┐
+  │ 5  MEET THE BAR                                /opsp:attest      │
+  │    frame the change first — source → base, confirmed             │
+  │    posture · evidence · exposure, against each bar               │
+  │    ex post · a different context · writes a record, never gates  │
+  │    state: attested                                               │
+  └──────────────────────────────────────────────────────────────────┘
+        ▼
+  ┌──────────────────────────────────────────────────────────────────┐
+  │ 6  COMPILE                    /opsp:archive · /opsp:compact      │
+  │    PRODUCES  squad/*.md · architecture.md · BOARD.md             │
+  │    the one point in the lifecycle every squad hat is sealed      │
+  │    state: completed                                              │
+  └──────────────────────────────────────────────────────────────────┘
+        ▼   compact check — drift fails the build
+        └──► harvested open loops land in the backlog, triaged at (2)
 ```
 
-**Key principles:**
+## When it is not the happy path
 
-- **Actions, not phases** - Commands are things you can do, not stages you're stuck in
-- **Dependencies are enablers** - They show what's possible, not what's required next
+A forward-only SDLC describes a project that never existed. Real work discovers, late, that
+something decided earlier was wrong — and **the whole value of attestation is being the place that
+discovery happens before the merge, not after it.**
 
-> **Customization:** OPSX workflows are driven by schemas that define artifact sequences. See [Customization](customization.md) for details on creating custom schemas.
+So the spine has back-edges. Which one you take is decided by **what has to move**, and the answer
+is in a file you can point at:
 
-## Two Modes
+```
+  ┌─ c ─ the GOAL moved ───────────────────────── /opsp:reexplore ───┐
+  │      a driver-spec's STATEMENT no longer holds                  │
+  │      this is /opsp:explore, later — thinking time with the work │
+  │      in hand. WRITES NOTHING, exactly like explore.             │
+  │      then rejoin: backlog → triage → propose, as the first time │
+  │      building · ready-for-attestation ───────────► exploring    │
+  └─────────────────────────────────────────────────────────────────┘
 
-### Default Quick Path (`core` profile)
+  ┌─ b ─ the STRATEGY moved ─────────────────── /opsp:repropose ────┐
+  │      the Statement holds. What was decided about reaching it    │
+  │      does not — "this is not what we meant"                     │
+  │      supersedes ADRs · may amend ## Measures · redraws the      │
+  │      milestones resting on them                                 │
+  │      building · ready-for-attestation ───────────► proposed     │
+  └─────────────────────────────────────────────────────────────────┘
 
-New installs default to `core`, which provides:
-- `/opsx:propose`
-- `/opsx:explore`
-- `/opsx:apply`
-- `/opsx:archive`
-
-Typical flow:
-
-```text
-/opsx:propose ──► /opsx:apply ──► /opsx:archive
+  ┌─ a ─ nothing moved, the work was not FINISHED ─ a change request┐
+  │      goal, strategy and plan all hold. It is simply incomplete. │
+  │      nothing superseded · no ADR moves · no record changes      │
+  │      ready-for-attestation ──────────────────────► building     │
+  └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Expanded/Full Workflow (custom selection)
+**The rungs are not invented** — they are the artifact hierarchy read downwards. Driver-specs hold
+the objective and goal, ADRs hold the strategy, milestones hold the plan. So "which rung" is
+answered by naming which file changes, not by judging whether something is "a big change".
 
-If you want explicit scaffold-and-build commands (`/opsx:new`, `/opsx:continue`, `/opsx:ff`, `/opsx:verify`, `/opsx:sync`, `/opsx:bulk-archive`, `/opsx:onboard`), enable them with:
+### Reexplore is explore, later
+
+A tool called *re*-explore that produced artifacts would not be re-exploring. `/opsp:explore`
+writes nothing, and so does `/opsp:reexplore` — the thinking is persisted by `/opsp:backlog`, the
+same tool that persists an original idea, in the same shape.
+
+```
+  /opsp:explore  ──► /opsp:backlog ──► /opsp:triage ──► /opsp:propose ──► ...
+  /opsp:reexplore ──┘
+        the same road, rejoined, with everything you learned building
+```
+
+That symmetry is why the goal rung needs no new vocabulary, no new artifacts and no new stage. A
+fallback path that reuses the forward path is one fewer thing to learn and one fewer thing to
+drift.
+
+The work already done is not pretended away: milestones that served the old goal are marked
+superseded, which is exactly what happened to them.
+
+### What repropose may and may not touch
+
+```
+  MAY CHANGE                           MUST NOT CHANGE
+  ──────────────────────────────       ─────────────────────────────
+  ADRs — superseded, or added          a driver-spec's Statement
+  a driver-spec's ## Measures          its objective, goal or role
+  the bar, where the strategy
+    changed how it is known met        anything outside ## Measures
+  milestones resting on the above
+```
+
+The `## Measures` boundary is the same one `/opsp:attest` writes inside, for the same reason: a
+record's *claim* never changes under a reader who cited it, while how that claim is measured is
+allowed to improve. A new strategy often makes a genuinely different thing observable, and a bar
+still describing the old mechanism is worse than no bar.
+
+**A bar that got easier is a goal that moved.** If the new bar is lower rather than different, that
+is `/opsp:reexplore` — and lowering a target becomes a decision somebody takes at the goal altitude
+rather than an edit nobody notices.
+
+### Every handoff names its hat
+
+A transition is not only a state change; most are a **change of accountability**. And since most
+hats are worn by the same engineer, that change is invisible unless something declares it.
+
+So each transition carries the hat it must be made wearing, and `opensprint advance` **refuses the
+move** until you name it:
+
+```
+$ opensprint advance multi-region --to building
+✖ 'proposed' → 'building' is a handoff. It is dev · devops work.
+  Set down the hat you are wearing, then re-run with --hat <dev|devops>
+  to state which accountability you are exercising.
+```
+
+| Transition | Hat | Handoff |
+|---|---|---|
+| exploring → proposed | all four | |
+| exploring ⇄ declined | product · maintainer | |
+| proposed → building | dev · devops | **yes** |
+| building → ready-for-attestation | dev · devops | **yes** |
+| building → proposed · exploring | product · maintainer | **yes** |
+| ready-for-attestation → anywhere | product · maintainer | |
+| attested → completed | all four | **yes** |
+
+No command can verify a context was cleared. What it can do is refuse to move until somebody
+states which accountability they are exercising — and the moment of stating it is the moment the
+switch becomes deliberate.
+
+**None of attestation's exits is a handoff.** Attestation is product and maintainer work, and so
+are all three ways out of it. The hat change already happened, at the handoff into
+`ready-for-attestation`. That is what the handoff was for.
+
+### At the other end: escalation during build
+
+The same ladder, reached from the other side. An escalation whose answer revises a decision or
+invalidates milestones takes option `[4] This is bigger than one record` instead of writing a
+record and carrying on — and both rungs out of `building` are hat changes, because the objective
+and the strategy are not dev's to restate.
+
+## Who owns what
+
+| Stage | Owns it | Produces |
+|---|---|---|
+| ideate | product / maintainer | the initiative — objective and goal |
+| triage · propose | tech lead · architect · scrum master | driver-specs, ADRs, milestones, the bar |
+| build | dev / devops | code, and the decisions made while writing it |
+| **hand over** | dev / devops → product / maintainer | nothing — it is the moment itself |
+| attest | product / maintainer | posture, evidence, exposure |
+| archive | everyone | the compiled views |
+
+Most of these hats are worn by the same engineer. That is expected — the boundary is what you load,
+not who you are, and `/opsp:attest` takes it seriously enough to refuse a context that wrote the
+code.
+
+**Hand over produces nothing, and is a stage anyway.** It is the one point where accountability
+moves rather than work happening, and with the hats on one person that moment is invisible unless
+something marks it — so `ready-for-attestation` marks it, and `BOARD.md` gives it a column of its
+own. Work that needs *time* and work that needs *a person* are not the same queue.
+
+And it is the stage the back-edges leave from. Three of the four reversals above start here,
+because this is where somebody who did not build the thing looks at it for the first time.
+
+### Attest frames the change before it reads a bar
+
+An attester is standing in a branch, and a pull request is the unit being reviewed. Before any bar
+is read, `/opsp:attest` runs `opensprint frame`, which resolves `source → base` — the base taken
+from `--base`, else the remote's default branch, else the first of `main`, `master`, `develop`,
+`trunk` that exists — and reports **how** it chose, so a wrong guess in a fork is visible rather
+than silent. It then summarises the range back to you and waits for you to confirm it.
+
+What the frame carries is **scope, not rationale**: commit subject lines, a file-level stat, the
+initiatives the range touches and the changes it archived. Never a patch, and never a commit
+message body. A subject says what moved; a body argues that it was right, and an attester holding
+an argument adopts it.
+
+## The workflows
+
+### Lifecycle
+
+| Workflow | Does |
+|---|---|
+| `/opsp:explore` | architect-level thinking. **Writes nothing.** |
+| `/opsp:backlog` | flush the in-memory brainstorm to disk as an initiative |
+| `/opsp:triage` | pick up a backlog item: advance, decline, or send back |
+| `/opsp:propose` | formalize into driver-specs, ADRs and milestones |
+| `/opsp:apply` | execute milestones, orchestrating one opsx cycle each |
+| `/opsp:attest` | assess each bar against evidence — the half most processes skip |
+| `/opsp:archive` | compile the surrogate and close the initiative |
+
+**Falling back** — the rungs, by what has to move:
+
+| Workflow | Rung | Returns the initiative to |
+|---|---|---|
+| a change request from `/opsp:attest` | **nothing moved** — the work was not finished | `building` |
+| `/opsp:repropose` | the **strategy** — ADRs superseded, `## Measures` may be amended | `proposed` |
+| `/opsp:reexplore` | the **goal** — thinking time, writes nothing | `exploring` |
+
+**Other**
+
+| Workflow | Does |
+|---|---|
+| `/opsp:review` | commit graph, branch status, code review assistance |
+
+### Utility
+
+| Workflow | Does |
+|---|---|
+| `/opsp:driver` | create or edit a driver-spec directly |
+| `/opsp:decide` | record an ADR when ambiguity needs operator judgement |
+| `/opsp:tree` | visualize the decision tree with blast radius |
+| `/opsp:rebuild-assess` | a driver-spec changed — cascade the re-evaluation |
+| `/opsp:migrate` | report records the current hat shapes can no longer select |
+| `opensprint frame` | what this branch changes, and against what base |
+| `opensprint advance` | move an initiative to its next state |
+| `/opsp:compact` | recompile the views |
+
+### Intervention
+
+| Workflow | Does |
+|---|---|
+| `/opsp:knockdown` | reverse-engineer a surrogate from an existing codebase |
+
+### Parallel universes
+
+Each initiative is a worktree with its own copy of the surrogate, so two can run at once and
+disagree.
+
+| Workflow | Does |
+|---|---|
+| `/opsp:rebase` | bring one universe's work into another — soft fork, consensus |
+| `/opsp:abandon` | declare a winner, migrate what is compatible, archive the loser |
+
+Both are **operator-invocable only** — never from a pipeline, a sub-agent, or another skill. A
+corrupted surrogate degrades every downstream agent operation, and the damage is unbounded, so a
+false escalation costs one prompt while a false auto-accept costs the surrogate.
+
+## Attestation, specifically
+
+This is the workflow that distinguishes OpenSprint, so it is worth stating what it will refuse.
+
+**It reads narrowly.** It loads the objective, the goals, the bars and the CI evidence — and *not*
+the implementation diff, the design discussion, or the ADR rationales. Excluding the rationales is
+the part that feels wrong and is right: a rationale is an argument for the thing that was built, so
+loading it biases you toward accepting.
+
+**It will not self-assess.** Asked to attest in the session that wrote the implementation, it says
+so and stops. A narrow context arrived at by forgetting is not a narrow context.
+
+**It will not read the code to fill a gap.** If the evidence cannot answer the bar, that is a
+finding *about the evidence*:
+
+```markdown
+### Posture
+- **verdict**: cannot assess — no e2e coverage for the checkout path
+```
+
+…with an exposure naming what is missing. That is a complete attestation, and it generates exactly
+the backlog item that makes the next one possible.
+
+**It never gates.** It always exits zero. It does not block archive, a merge, or a release, and it
+does not mark anything approved. An unmet bar is recorded as an exposure with a forward pointer. The
+moment it gained a pass/fail exit it would be **certification**, which is deliberately out of scope —
+certification drags change management and release management in behind it.
+
+## CLI reference
+
+The workflows above drive these. You rarely need them directly.
 
 ```bash
-openspec config profile
-openspec update
+opensprint init                    # set up a repository
+opensprint update                  # refresh generated agent instructions
+opensprint config                  # global configuration: tools, delivery mode
+
+opensprint compact plan            # which view sections need recompiling, and from what
+opensprint compact plan --json     #   …as JSON, including each record's citation authority
+opensprint compact seal            # record the current views in the provenance manifest
+opensprint compact check           # fail when a view is stale, tampered or unsealed
+opensprint compact loops           # report open loops
+opensprint compact board           # regenerate BOARD.md
+
+opensprint list                    # changes, or --specs
+opensprint show <item>             # a change or a spec
+opensprint validate <item>         # validate a change or spec
+opensprint archive <change>        # archive a change and sync its specs
+opensprint status                  # artifact completion for a change
 ```
 
-## Workflow Patterns (Expanded Mode)
-
-### Quick Feature
-
-When you know what you want to build and just need to execute:
-
-```text
-/opsx:new ──► /opsx:ff ──► /opsx:apply ──► /opsx:verify ──► /opsx:archive
-```
-
-**Example conversation:**
-
-```text
-You: /opsx:new add-logout-button
-
-AI:  Created openspec/changes/add-logout-button/
-     Ready to create: proposal
-
-You: /opsx:ff
-
-AI:  Creating all planning artifacts...
-     ✓ proposal.md
-     ✓ specs/
-     ✓ design.md
-     ✓ tasks.md
-     Ready for implementation!
-
-You: /opsx:apply
-
-AI:  Working through tasks...
-     ✓ Added logout button to header
-     ✓ Implemented session clearing
-     ✓ Added confirmation dialog
-     All tasks complete!
-
-You: /opsx:archive
-
-AI:  ✓ Merged specs
-     ✓ Archived change
-```
-
-**Best for:** Small to medium features, bug fixes, straightforward changes.
-
-### Exploratory
-
-When requirements are unclear or you need to investigate first:
-
-```text
-/opsx:explore ──► /opsx:new ──► /opsx:continue ──► ... ──► /opsx:apply
-```
-
-**Example conversation:**
-
-```text
-You: /opsx:explore
-
-AI:  What would you like to explore?
-
-You: I want to improve page load performance but I'm not sure
-     where the bottlenecks are.
-
-AI:  Let me help investigate...
-     [Analyzes bundle sizes, identifies slow queries, reviews
-     component render patterns]
-
-     I found three main bottlenecks:
-     1. Large unoptimized images
-     2. Synchronous data fetching in ProductList
-     3. Re-renders from context changes
-
-     Which would you like to address first?
-
-You: Let's tackle the data fetching issue.
-
-You: /opsx:new optimize-product-list-fetching
-
-AI:  Created change. Ready to create: proposal
-
-You: /opsx:continue
-
-AI:  Creating proposal based on our exploration...
-     [Writes proposal incorporating investigation insights]
-
-     Ready to create: specs, design
-     Which would you like next?
-
-You: /opsx:continue
-
-AI:  Creating specs...
-```
-
-**Best for:** Performance optimization, debugging, architectural decisions, unclear requirements.
-
-### Parallel Changes
-
-Work on multiple changes at once:
-
-```text
-Change A: /opsx:new ──► /opsx:ff ──► /opsx:apply (in progress)
-                                         │
-                                    context switch
-                                         │
-Change B: /opsx:new ──► /opsx:ff ──────► /opsx:apply
-```
-
-**Example conversation:**
-
-```text
-You: I'm working on add-dark-mode but got pulled into a bug fix
-
-You: /opsx:new fix-login-redirect
-
-AI:  Created openspec/changes/fix-login-redirect/
-
-You: /opsx:ff
-
-AI:  ✓ Created planning artifacts
-
-You: /opsx:apply
-
-AI:  Working on fix-login-redirect...
-     [Implements the fix]
-     All tasks complete!
-
-You: /opsx:archive
-
-AI:  ✓ Archived fix-login-redirect
-
-You: Let's get back to dark mode
-
-You: /opsx:apply add-dark-mode
-
-AI:  Resuming add-dark-mode...
-     Picking up at task 2.3: Update Header...
-```
-
-**Best for:** Parallel work streams, urgent interrupts, team collaboration.
-
-When you have multiple completed changes, use `/opsx:bulk-archive`:
-
-```text
-You: /opsx:bulk-archive
-
-AI:  Found 3 completed changes:
-     - add-dark-mode (all tasks done)
-     - fix-login-redirect (all tasks done)
-     - update-footer (all tasks done)
-
-     Checking for spec conflicts...
-     ⚠ add-dark-mode and update-footer both touch specs/ui/
-
-     Inspecting codebase to resolve...
-     Both changes are implemented. Will apply in chronological order.
-
-     Archive all 3 changes?
-
-You: Yes
-
-AI:  ✓ Archived add-dark-mode
-     ✓ Archived fix-login-redirect
-     ✓ Archived update-footer
-     Specs merged in order: add-dark-mode → update-footer
-```
-
-Bulk archive detects when multiple changes touch the same specs and resolves conflicts by checking what's actually implemented.
-
-### Completing a Change
-
-The recommended completion flow:
-
-```text
-/opsx:apply ──► /opsx:verify ──► /opsx:archive
-                    │                 │
-              validates          prompts to sync
-              implementation     if needed
-```
-
-#### Verify: Check Your Work
-
-`/opsx:verify` validates implementation against your artifacts across three dimensions:
-
-```text
-You: /opsx:verify
-
-AI:  Verifying add-auth...
-
-     COMPLETENESS
-     ✓ All 12 tasks in tasks.md are checked
-     ✓ All requirements in specs have corresponding code
-     ⚠ Scenario "Session timeout after inactivity" not tested
-
-     CORRECTNESS
-     ✓ Implementation matches spec intent
-     ✓ Edge cases from scenarios are handled
-     ✓ Error states match spec definitions
-
-     COHERENCE
-     ✓ Design decisions reflected in code structure
-     ✓ Naming conventions consistent with design.md
-     ⚠ Design mentions "event-driven" but implementation uses polling
-
-     SUMMARY
-     ─────────────────────────────
-     Critical issues: 0
-     Warnings: 2
-     Ready to archive: Yes (with warnings)
-
-     Recommendations:
-     1. Add test for session timeout scenario
-     2. Consider refactoring to event-driven as designed, or update design.md
-```
-
-**What verify checks:**
-
-| Dimension | What it validates |
-|-----------|------------------|
-| Completeness | All tasks done, all requirements implemented, scenarios covered |
-| Correctness | Implementation matches spec intent, edge cases handled |
-| Coherence | Design decisions reflected in code, patterns consistent |
-
-Verify won't block archive, but it surfaces issues you might want to address first.
-
-#### Archive: Finalize the Change
-
-`/opsx:archive` completes the change and moves it to the archive:
-
-```text
-You: /opsx:archive
-
-AI:  Archiving add-auth...
-
-     Artifact status:
-     ✓ proposal.md exists
-     ✓ specs/ exists
-     ✓ design.md exists
-     ✓ tasks.md exists (12/12 tasks complete)
-
-     Delta specs: Not yet synced to main
-     → Would you like to sync now?
-
-You: Yes
-
-AI:  ✓ Synced specs to openspec/specs/auth/spec.md
-     ✓ Moved to openspec/changes/archive/2025-01-24-add-auth/
-
-     Change archived successfully.
-```
-
-Archive will prompt if specs aren't synced. It won't block on incomplete tasks, but it will warn you.
-
-## When to Use What
-
-### `/opsx:ff` vs `/opsx:continue`
-
-| Situation | Use |
-|-----------|-----|
-| Clear requirements, ready to build | `/opsx:ff` |
-| Exploring, want to review each step | `/opsx:continue` |
-| Want to iterate on proposal before specs | `/opsx:continue` |
-| Time pressure, need to move fast | `/opsx:ff` |
-| Complex change, want control | `/opsx:continue` |
-
-**Rule of thumb:** If you can describe the full scope upfront, use `/opsx:ff`. If you're figuring it out as you go, use `/opsx:continue`.
-
-### When to Update vs Start Fresh
-
-A common question: when is updating an existing change okay, and when should you start a new one?
-
-**Update the existing change when:**
-
-- Same intent, refined execution
-- Scope narrows (MVP first, rest later)
-- Learning-driven corrections (codebase isn't what you expected)
-- Design tweaks based on implementation discoveries
-
-**Start a new change when:**
-
-- Intent fundamentally changed
-- Scope exploded to different work entirely
-- Original change can be marked "done" standalone
-- Patches would confuse more than clarify
-
-```text
-                     ┌─────────────────────────────────────┐
-                     │     Is this the same work?          │
-                     └──────────────┬──────────────────────┘
-                                    │
-                 ┌──────────────────┼──────────────────┐
-                 │                  │                  │
-                 ▼                  ▼                  ▼
-          Same intent?      >50% overlap?      Can original
-          Same problem?     Same scope?        be "done" without
-                 │                  │          these changes?
-                 │                  │                  │
-       ┌────────┴────────┐  ┌──────┴──────┐   ┌───────┴───────┐
-       │                 │  │             │   │               │
-      YES               NO YES           NO  NO              YES
-       │                 │  │             │   │               │
-       ▼                 ▼  ▼             ▼   ▼               ▼
-    UPDATE            NEW  UPDATE       NEW  UPDATE          NEW
-```
-
-**Example: "Add dark mode"**
-
-- "Need to also support custom themes" → New change (scope exploded)
-- "System preference detection is harder than expected" → Update (same intent)
-- "Let's ship toggle first, add preferences later" → Update then archive, then new change
-
-## Best Practices
-
-### Keep Changes Focused
-
-One logical unit of work per change. If you're doing "add feature X and also refactor Y", consider two separate changes.
-
-**Why it matters:**
-- Easier to review and understand
-- Cleaner archive history
-- Can ship independently
-- Simpler rollback if needed
-
-### Use `/opsx:explore` for Unclear Requirements
-
-Before committing to a change, explore the problem space:
-
-```text
-You: /opsx:explore
-
-AI:  What would you like to explore?
-
-You: How should we handle rate limiting for our API?
-
-AI:  Let me investigate your current setup and options...
-     [Researches codebase, considers patterns]
-
-     I see three approaches we could take:
-     1. Middleware-based (simple, per-endpoint)
-     2. Redis-backed (scalable, shared state)
-     3. Token bucket per user (fair, complex)
-
-     Your current stack suggests #1 or #2. What's your scale?
-```
-
-Exploration clarifies thinking before you create artifacts.
-
-### Verify Before Archiving
-
-Use `/opsx:verify` to check implementation matches artifacts:
-
-```text
-You: /opsx:verify
-
-AI:  Verifying add-dark-mode...
-
-     ✓ All tasks in tasks.md are checked
-     ✓ Requirements in specs have corresponding code
-     ✓ Design decisions are reflected in implementation
-
-     Ready to archive!
-```
-
-Catches mismatches before you close out the change.
-
-### Name Changes Clearly
-
-Good names make `openspec list` useful:
-
-```text
-Good:                          Avoid:
-add-dark-mode                  feature-1
-fix-login-redirect             update
-optimize-product-query         changes
-implement-2fa                  wip
-```
-
-## Command Quick Reference
-
-For full command details and options, see [Commands](commands.md).
-
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `/opsx:propose` | Create change + planning artifacts | Fast default path (`core` profile) |
-| `/opsx:explore` | Think through ideas | Unclear requirements, investigation |
-| `/opsx:new` | Start a change scaffold | Expanded mode, explicit artifact control |
-| `/opsx:continue` | Create next artifact | Expanded mode, step-by-step artifact creation |
-| `/opsx:ff` | Create all planning artifacts | Expanded mode, clear scope |
-| `/opsx:apply` | Implement tasks | Ready to write code |
-| `/opsx:verify` | Validate implementation | Expanded mode, before archiving |
-| `/opsx:sync` | Merge delta specs | Expanded mode, optional |
-| `/opsx:archive` | Complete the change | All work finished |
-| `/opsx:bulk-archive` | Archive multiple changes | Expanded mode, parallel work |
-
-## Next Steps
-
-- [Commands](commands.md) - Full command reference with options
-- [Concepts](concepts.md) - Deep dive into specs, artifacts, and schemas
-- [Customization](customization.md) - Create custom workflows
+`opensprint compact check` is the one to put in CI. It is the gate that makes the compiled views
+trustworthy — see [Git workflow](git-workflow.md).

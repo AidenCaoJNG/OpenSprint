@@ -15,6 +15,38 @@ import * as path from 'node:path';
 import chalk from 'chalk';
 import { OPENSPRINT_DIR_NAME } from '../core/config.js';
 import { resolveHatRegistry, resolveHatSections, resolveHatRoles } from '../core/hats.js';
+import { regenerateBoard, BOARD_FILENAME } from '../core/board.js';
+
+/** Options for `compact seal` (DEC-SCOPED-SEAL). */
+export interface SealOptions {
+  /** Hats to reseal. Empty or absent means every hat. */
+  hats?: string[];
+}
+
+/**
+ * Narrows a requested hat list to those the registry knows.
+ *
+ * An unknown name warns and is dropped rather than failing: a typo in --hat
+ * should not abort an archive, the same way a malformed registry degrades.
+ * Returns undefined when nothing was requested, meaning "every hat".
+ */
+function requestedHats(
+  requested: string[] | undefined,
+  registry: readonly string[]
+): string[] | undefined {
+  if (requested === undefined || requested.length === 0) return undefined;
+  const known = new Set(registry);
+  const kept = requested.filter((hat) => {
+    if (known.has(hat)) return true;
+    console.warn(
+      chalk.yellow(`Unknown hat '${hat}'. Known hats: ${registry.join(', ')}. Ignoring.`)
+    );
+    return false;
+  });
+  return kept.length > 0 ? kept : undefined;
+}
+import { readInitiatives } from '../core/initiatives.js';
+import { attestationOf } from '../core/compact/measures.js';
 import {
   readSourcedDriverSpecs,
   readSourcedDecisions,
@@ -48,6 +80,8 @@ import { deriveOpenLoops, groupLoopsByHat, type OpenLoop } from '../core/compact
 
 export interface CompactOptions {
   json?: boolean;
+  /** Hats to report on. Empty or absent means every hat. */
+  hats?: string[];
 }
 
 // -----------------------------------------------------------------------------
@@ -97,6 +131,22 @@ function scan(projectRoot: string): Scan {
 }
 
 /**
+ * Whether a repository-relative evidence path exists in the tree.
+ *
+ * Refuses anything that escapes the project root, and anything absolute.
+ * Both are answered `true` — the check has nothing to say about a path it
+ * will not look at, and reporting one as missing would be inventing a gap
+ * (DEC-007) about a reference that may well be valid outside the repository.
+ */
+function resolvesInTree(projectRoot: string, target: string): boolean {
+  if (path.isAbsolute(target)) return true;
+  const resolved = path.resolve(projectRoot, target);
+  const root = path.resolve(projectRoot);
+  if (resolved !== root && !resolved.startsWith(root + path.sep)) return true;
+  return fs.existsSync(resolved);
+}
+
+/**
  * Harvests rule citations and derives open loops.
  *
  * Kept out of `scan()` because it walks the project's source tree — the most
@@ -106,8 +156,14 @@ function scan(projectRoot: string): Scan {
 function openLoopsFor(projectRoot: string, s: Scan): OpenLoop[] {
   const ids = [...s.driverSpecs.map((r) => r.id), ...s.decisions.map((r) => r.id)];
   const index = buildRuleIndex(projectRoot, ids, resolveRuleGlobs(projectRoot));
-  return deriveOpenLoops(s.driverSpecs, s.decisions, index, (hat) =>
-    resolveHatRoles(projectRoot, hat)
+  return deriveOpenLoops(
+    s.driverSpecs,
+    s.decisions,
+    index,
+    (hat) => resolveHatRoles(projectRoot, hat),
+    (hat) => resolveHatSections(projectRoot, hat),
+    readInitiatives(s.opensprintDir),
+    (target) => resolvesInTree(projectRoot, target)
   );
 }
 
@@ -145,7 +201,13 @@ export async function compactPlanCommand(options: CompactOptions = {}): Promise<
   const projectRoot = process.cwd();
   const s = scan(projectRoot);
   const { statuses, unassigned, unknownHats, registry } = s;
-  const pending = statuses.filter((st) => st.state !== 'fresh');
+  // Open loops are deliberately not filtered: a loop belongs to the records,
+  // not to a view section, so narrowing the plan to one hat must not hide
+  // them.
+  const requested = requestedHats(options.hats, registry);
+  const pending = statuses
+    .filter((st) => st.state !== 'fresh')
+    .filter((st) => requested === undefined || requested.includes(st.hat));
   const loops = openLoopsFor(projectRoot, s);
 
   if (options.json) {
@@ -162,10 +224,20 @@ export async function compactPlanCommand(options: CompactOptions = {}): Promise<
             observedAdded: s.observedAdded,
             observedRemoved: s.observedRemoved,
             observedModified: s.observedModified,
-            inputs: s.inputs.map((r) => ({
-              id: r.id,
-              path: relative(projectRoot, r.path),
-            })),
+            inputs: s.inputs.map((r) => {
+              // DEC-021: the renderer needs to know which authority a claim
+              // about this record may carry, because only `attested`
+              // licenses an unqualified present-tense statement.
+              const attestation = attestationOf(r.content);
+              return {
+                id: r.id,
+                path: relative(projectRoot, r.path),
+                authority: attestation.authority,
+                ...(attestation.verdict === undefined ? {} : { verdict: attestation.verdict }),
+                ...(attestation.by === undefined ? {} : { attestedBy: attestation.by }),
+                ...(attestation.on === undefined ? {} : { attestedOn: attestation.on }),
+              };
+            }),
             observes: Object.keys(s.observed).sort(),
           })),
           unassigned,
@@ -231,12 +303,29 @@ function reportUnrouted(
 // seal — record the current state. The only mode that writes.
 // -----------------------------------------------------------------------------
 
-export async function compactSealCommand(): Promise<void> {
+export async function compactSealCommand(options: SealOptions = {}): Promise<void> {
   const projectRoot = process.cwd();
   const { opensprintDir, registry, grouped } = scan(projectRoot);
 
+  // DEC-SCOPED-SEAL. Two rules, and the second matters more than the first:
+  // a caller may scope correctly and still bless a section whose inputs moved
+  // while its prose was never regenerated.
+  const existing = readManifest(opensprintDir);
+  const previousByHat = new Map<string, ManifestEntry[]>();
+  for (const entry of existing.entries) {
+    const list = previousByHat.get(entry.hat) ?? [];
+    list.push(entry);
+    previousByHat.set(entry.hat, list);
+  }
+
+  const requested = requestedHats(options.hats, registry);
+  const inScope = (hat: string): boolean =>
+    requested === undefined || requested.includes(hat);
+
   const entries: ManifestEntry[] = [];
   const unrendered: string[] = [];
+  const carried: string[] = [];
+  let sealed = 0;
 
   for (const hat of registry) {
     const file = viewPath(opensprintDir, hat);
@@ -249,6 +338,19 @@ export async function compactSealCommand(): Promise<void> {
       (grouped.decisionsByHat.get(hat)?.length ?? 0) > 0;
     if (rendered === null && hatHasRecords) unrendered.push(hat);
 
+    const previous = previousByHat.get(hat) ?? [];
+    // Carrying forward keeps the recorded inputHash, which is what preserves
+    // the staleness signal. Dropping the entries would report `unsealed`,
+    // which is a different and misleading state.
+    const unchanged =
+      previous.length > 0 && rendered !== null && previous.every((e) => e.outputHash === rendered);
+
+    if (!inScope(hat) || unchanged) {
+      entries.push(...previous);
+      if (previous.length > 0) carried.push(hat);
+      continue;
+    }
+
     for (const section of resolveHatSections(projectRoot, hat)) {
       const inputs = resolveSectionInputs(hat, section, grouped);
       const observed = resolveObservedFiles(projectRoot, section);
@@ -260,18 +362,42 @@ export async function compactSealCommand(): Promise<void> {
         inputHash: sectionInputHash(inputs, observed),
         outputHash: rendered,
       });
+      sealed += 1;
     }
   }
 
   const manifest: Manifest = { version: 1, entries };
   writeManifest(opensprintDir, manifest);
 
-  console.log(chalk.green(`Sealed ${entries.length} section(s) across ${registry.length} hat(s).`));
+  // The board is part of the same compile pass (DEC-026). It needs no skill,
+  // so it is regenerated here rather than sealed and staleness-gated.
+  regenerateBoard(opensprintDir);
+
+  console.log(
+    chalk.green(`Sealed ${sealed} section(s) across ${registry.length - carried.length} hat(s).`)
+  );
+  if (carried.length > 0) {
+    console.log(
+      chalk.gray(`  carried forward unchanged: ${carried.join(', ')} — not re-rendered or out of scope`)
+    );
+  }
+  console.log(chalk.gray(`  regenerated ${BOARD_FILENAME}`));
   for (const hat of unrendered) {
     console.log(
       chalk.yellow(`  ${hat}: has records but no view at ${relative(projectRoot, viewPath(opensprintDir, hat))}`)
     );
   }
+}
+
+// -----------------------------------------------------------------------------
+// board — regenerate the board alone. Deterministic, so never gated.
+// -----------------------------------------------------------------------------
+
+export async function compactBoardCommand(): Promise<void> {
+  const projectRoot = process.cwd();
+  const { opensprintDir } = scan(projectRoot);
+  regenerateBoard(opensprintDir);
+  console.log(chalk.green(`Regenerated ${relative(projectRoot, path.join(opensprintDir, BOARD_FILENAME))}`));
 }
 
 // -----------------------------------------------------------------------------

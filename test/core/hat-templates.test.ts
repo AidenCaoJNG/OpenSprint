@@ -65,8 +65,44 @@ describe('hat templates', () => {
       expect(names('product')).toEqual(['objective', 'goals', 'strategies', 'measures', 'open-loops']);
     });
 
-    it('maintainer is positions and their evidence', () => {
-      expect(names('maintainer')).toEqual(['bars', 'posture', 'evidence', 'exposure', 'open-loops']);
+    it('maintainer is the seven inherited objectives', () => {
+      expect(names('maintainer')).toEqual([
+        'posture',
+        'security-access',
+        'isolation-confidentiality',
+        'privacy-retention-legal',
+        'integrity-correctness',
+        'change-quality',
+        'availability-continuity',
+        'cost-budget',
+        'open-loops',
+      ]);
+    });
+
+    it('every maintainer objective selects on its own objective, for goals and strategies', () => {
+      const sections = resolveHatSections(root, 'maintainer').filter(
+        (s) => s.name !== 'open-loops' && s.name !== 'posture'
+      );
+      expect(sections).toHaveLength(7);
+      for (const section of sections) {
+        expect(section.objective).toBe(section.name);
+        expect(section.inputs).toBe('driver-specs');
+        expect(section.roles).toEqual(['goal', 'strategy']);
+      }
+    });
+
+    it('maintainer renders the hat posture above the grid, unfiltered by objective', () => {
+      const posture = resolveHatSections(root, 'maintainer')[0];
+      expect(posture.name).toBe('posture');
+      expect(posture.objective).toBeUndefined();
+      expect(posture.roles).toEqual(['posture']);
+    });
+
+    it('maintainer headings carry punctuation no title-casing could produce', () => {
+      const headings = resolveHatSections(root, 'maintainer').map((s) => s.heading);
+      expect(headings).toContain('Privacy, Retention & Legal');
+      expect(headings).toContain('Security & Access');
+      expect(headings).toContain('Availability & Continuity');
     });
 
     it('dev describes the system', () => {

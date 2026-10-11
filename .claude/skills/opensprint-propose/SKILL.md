@@ -6,7 +6,7 @@ compatibility: Requires openspec CLI.
 metadata:
   author: opensprint
   version: "1.0"
-  generatedBy: "0.0.6"
+  generatedBy: "0.0.9"
 ---
 
 Create an initiative by analyzing the exploration conversation and classifying operator inputs into the proper opensprint artifacts.
@@ -16,6 +16,28 @@ Create an initiative by analyzing the exploration conversation and classifying o
 ---
 
 ## Steps
+
+### 0. Where the input comes from
+
+Two paths reach here, and both are valid (`DEC-034`):
+
+| Path | What you are given |
+|---|---|
+| straight from `/opsp:explore` | a conversation |
+| from `/opsp:triage` | an **initiative already on disk** at `state: exploring`, holding an objective and a goal, plus the strategy that triage worked out |
+
+**Where an initiative already exists, do not create a second one.** Read it, switch to its worktree
+(`DEC-029`), and fill in what it is missing — Strategy and Measure. Its Objective and Goal were
+written at backlog time and are not yours to rewrite.
+
+```bash
+openspec compact board          # the Backlog column lists them
+git branch --show-current       # be on opsp/<initiative> before writing
+```
+
+**You are the formalizer.** Triage did the strategy brainstorming; this step turns it into records.
+Where you arrived straight from explore, you do both — but the conversation has already happened
+either way, and this step writes rather than thinks.
 
 ### 1. Analyze the Conversation
 
@@ -64,23 +86,78 @@ Wait for operator confirmation. Adjust if they correct anything.
 After confirmation, create files in sequence:
 
 **a. Driver Specs** — for each identified external constraint:
-- Create `opensprint/driver-specs/DS-<ID>.md` with YAML frontmatter
+- Create `opensprint/driver-specs/DS-<SEMANTIC-NAME>.md`
 - Use the operator's words faithfully
+- **Assign the hat and the role**, and **write the bar** — this is where the bar is written, ex ante
+
+```markdown
+---
+id: DS-<SEMANTIC-NAME>
+type: <product|legal|compliance|reliability|architecture|business>
+status: active
+created: <YYYY-MM-DD>
+hats: [<product|maintainer>]
+role: <objective|goal|strategy>
+---
+
+<the constraint, in the operator's words>
+
+## Measures
+
+- **Primary**: <the one thing that says whether this landed>
+
+### Bar
+
+<the BDD form for this hat — `DEC-038`>
+
+product — a user story:
+  as a    <persona>
+  I want  <goal>
+  for     <reason>
+
+maintainer — given / when / then:
+  given   <precondition>
+  when    <trigger>
+  then    <observable outcome>
+
+- **dimension**: <the axis this sits on>
+- **chosen**: <where on it, and the scope that applies to>
+- **traded for**: <what was given up to sit here>
+- **neighbour**: <the position not taken, or `unrecorded`>
+```
+
+**A `goal` or a `bar` without a populated `## Measures` is reported on every compile**
+(`constraint-unmeasurable`), and so is a record with no `role` in a hat that uses them
+(`record-unclassified`). Writing them here is cheaper than harvesting them back.
+
+**Do not write a measure you cannot state the bar for.** A `## Measures` heading with nothing
+beneath it counts as absent, deliberately — the shape of an answer without the answer is worse than
+the gap, because the gap gets reported.
+
+**Ask the operator; do not invent.** Where they cannot state a bar yet, record
+`- **Primary**: unstated` and say the loop will keep reporting it. An honest gap beats a
+fabricated target, and a bar nobody agreed to is one the attester will measure against.
 
 **b. ADRs** — for each identified architectural decision:
-- Create `opensprint/ADRs/DEC-<NNN>.md` with YAML frontmatter
+- Create `opensprint/ADRs/DEC-SEMANTIC-NAME.md` with YAML frontmatter — a short kebab-case
+  phrase in capitals naming what was decided, **never a number** (`DEC-036`). Numbers collide
+  across worktrees and tell a reader nothing. `DEC-001`–`DEC-044` keep theirs permanently.
 - Include: Question, Operator Decision, Consideration Factors, Rationale, Invalidation Trigger
 - Link to parent driver-specs via `depends-on`
 - Calculate depth (0 if depends only on driver-specs)
 
 **c. Regenerate DECISION-MAP.md** — after creating ADRs
 
-**d. Initiative Descriptor** — create `opensprint/initiatives/<name>.md`:
+**d. Initiative Descriptor** — create `opensprint/initiatives/<YYYYMMDD>-<name>.md`, where the
+prefix is today's date with no separators (`DEC-036`). The prefix is **presentation
+only** — every reader resolves by the `id:` below, never by filename, so a file renamed or a date
+mistyped still resolves:
 
 ```markdown
 ---
 id: <initiative-name>
 status: active
+state: proposed
 created: <YYYY-MM-DD>
 ---
 
@@ -97,6 +174,13 @@ created: <YYYY-MM-DD>
 
 - DEC-001
 - DEC-002
+
+## Addresses
+
+<!-- Only when this initiative arose from triaging open loops. Omit otherwise. -->
+
+- constraint-unanswered: DS-BACKWARD-COMPAT
+- decision-unguarded: DEC-010
 
 ## Milestones
 
@@ -115,9 +199,34 @@ Display what was created:
 
 ---
 
+### Recording what the initiative closes
+
+If the exploration started from open loops (`opensprint compact loops`), list them under
+`## Addresses` in the descriptor — the loop kind and the record it concerns. Omit the section
+entirely when the initiative did not arise from a loop.
+
+It is prose, not frontmatter, and deliberately so. **Nothing marks a loop resolved.** A gap exists
+while the harvest reports it and stops existing when it stops reporting it, so the backlog cannot
+drift from reality. `Addresses` records what the initiative set out to close, not what it did.
+
+---
+
 ## Guardrails
 
 - **Classify, don't invent** — Only create driver-specs and ADRs from what the operator actually said
+- **Never duplicate an initiative** — where one exists at `state: exploring`, fill it in and advance it; do not write a second
+
+## Step 5: Advance the state
+
+```bash
+opensprint advance <initiative-name> --to proposed
+```
+
+**Do not edit `state:` by hand.** The command refuses an illegal move, names the legal ones, and
+regenerates `BOARD.md` (`DEC-STATE-MACHINE`). Writing the field directly is what left every
+initiative in this project stuck at the wrong state — the instruction to set it existed and was
+simply never followed.
+- **Never rewrite an Objective or Goal** — those were settled at backlog time
 - **Operator confirms** — Always present classification before writing files
 - **High-level milestones** — Each milestone is a brief description, not a detailed plan. Detail comes from opsx.
 - **Use path.join()** — Construct all file paths cross-platform

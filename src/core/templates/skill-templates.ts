@@ -29,9 +29,14 @@ export { getRebuildAssessSkillTemplate, getOpspRebuildAssessCommandTemplate } fr
 export { getOpspExploreSkillTemplate, getOpspExploreCommandTemplate } from './workflows/opsp-explore.js';
 export { getOpspProposeSkillTemplate, getOpspProposeCommandTemplate } from './workflows/opsp-propose.js';
 export { getOpspApplySkillTemplate, getOpspApplyCommandTemplate } from './workflows/opsp-apply.js';
+export { getOpspAttestSkillTemplate, getOpspAttestCommandTemplate } from './workflows/opsp-attest.js';
+export { getOpspMigrateSkillTemplate, getOpspMigrateCommandTemplate } from './workflows/opsp-migrate.js';
+export { getOpspBacklogSkillTemplate, getOpspBacklogCommandTemplate } from './workflows/opsp-backlog.js';
+export { getOpspTriageSkillTemplate, getOpspTriageCommandTemplate } from './workflows/opsp-triage.js';
 export { getOpspArchiveSkillTemplate, getOpspArchiveCommandTemplate } from './workflows/opsp-archive.js';
 export { getOpspReviewSkillTemplate, getOpspReviewCommandTemplate } from './workflows/opsp-review.js';
 export { getOpspReexploreSkillTemplate, getOpspReexploreCommandTemplate } from './workflows/opsp-reexplore.js';
+export { getOpspReproposeSkillTemplate, getOpspReproposeCommandTemplate } from './workflows/opsp-repropose.js';
 export { getOpspKnockdownSkillTemplate, getOpspKnockdownCommandTemplate } from './workflows/opsp-knockdown.js';
 export { getOpspRebaseSkillTemplate, getOpspRebaseCommandTemplate } from './workflows/opsp-rebase.js';
 export { getOpspAbandonSkillTemplate, getOpspAbandonCommandTemplate } from './workflows/opsp-abandon.js';

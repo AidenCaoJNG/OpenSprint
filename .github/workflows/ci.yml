@@ -54,8 +54,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -110,8 +108,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -149,8 +145,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -206,8 +200,8 @@ jobs:
             echo "Error: Nix build output 'result' symlink not found"
             exit 1
           fi
-          if [ ! -f "result/bin/openspec" ]; then
-            echo "Error: openspec binary not found in build output"
+          if [ ! -f "result/bin/opensprint" ]; then
+            echo "Error: opensprint binary not found in build output"
             exit 1
           fi
           echo "✅ Build output verified"
@@ -253,8 +247,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

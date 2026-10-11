@@ -109,25 +109,40 @@ Citations also make the drill-down affordable. A reader orients on the view and 
 
 ---
 
-## The record and the system are different things
+## Three authorities, and only one licenses the present tense
 
-A view describes **the system**, citing records where they explain it. Those are two sources with
-very different authority, and a reader has to be able to tell them apart:
+A view describes **the system**, citing records where they explain it. A claim can rest on three
+different things, and a reader has to be able to tell which:
 
-- **a decision is binding** — someone chose it, and departing from it is a defect
-- **an observation is a fact** — it is what the code does today, and it may be an accident
-
-So the citation says which:
+| Authority | Cited by | Says | Weakness |
+|---|---|---|---|
+| **decided** | a record id | it binds — departing from it is a defect | **may not be true yet** |
+| **observed** | a path | it is what the code does today | may be an accident |
+| **attested** | evidence · date · attester | asserted true, with an artifact behind it | ages |
 
 \`\`\`
-FROM A RECORD:       The ledger is append-only and entries balance in the
-                     functional currency (\`DEC-047\`).
-
-FROM AN OBSERVATION: The API runs on Node 22 and Fastify
-                     (\`apps/api/package.json\`).
+DECIDED:    Reconciliation is operator-invocable only (\`DS-HIGH-IMPACT-OPS\`).
+OBSERVED:   The API runs on Node 22 and Fastify (\`apps/api/package.json\`).
+ATTESTED:   No credential reaches a log; the scan has failed the build on every
+            attempt since (\`DS-SECRETS\`, attested 2026-10-09 by ivan).
 \`\`\`
 
-Three rules follow.
+**Only \`attested\` licenses an unqualified present-tense claim about a property of the system.**
+
+The plan tells you which: each staged record carries an \`authority\`. A record is \`attested\` only
+where its measure carries both an attestation date and evidence — a verdict with nothing asserting
+it is an opinion, and the harvest reports it as \`measure-unasserted\`.
+
+Four rules follow.
+
+**A decided-but-unattested claim is written as a decision, not as a fact.** Write *"reconciliation
+is operator-invocable only (\`DS-HIGH-IMPACT-OPS\`)"*, never *"reconciliation cannot be automated"*.
+The first is true; the second is a claim about the running system that nothing has checked.
+
+This is the failure this contract exists to prevent. A compiled view once stated *"Operator-only
+reconciliation — absolute, not a preference"* under **Constraints & Non-Negotiables** while another
+view, compiled in the same pass from the same records, admitted the guardrail was instruction text
+no rule read. Neither was wrong; there was no third category.
 
 **An observation no record explains still stands.** Write it, cite its path, and do not invent a
 rationale. Something being undocumented means it was never made explicit — that is reportable, not
@@ -171,31 +186,134 @@ whether the goals landed.
 There is **no charter and no constraints section**. What a charter would have said is carried by
 the objective; a constraint is either a goal, or a strategy describing how it is worked around.
 
-### maintainer — positions, and what they cost
+### maintainer — seven inherited objectives, and what each costs
 
-\`bars · posture · evidence · exposure · open-loops\`
+\`posture · security & access · isolation & confidentiality · privacy, retention & legal ·
+integrity & correctness · change & quality · availability & continuity · cost & budget ·
+open-loops\`
 
-What this hat controls is always a **position on a spectrum**, and moving along one axis costs
-something on another. So a bar is never just a number:
+This hat is the **technical product manager**: the same OGSM as product, with one difference that
+carries everything — its objectives are **inherited, not discovered**. Every software project
+worries about the same seven things, which is why the accountability spun off from product.
+
+**posture comes first, above the grid.** It is the hat's own statement of what standard the
+project holds itself to at all, which is upstream of every objective rather than one of them. A
+per-measure posture is a deviation from it.
+
+Each objective then carries a **goal**, a **strategy**, and a **measure**:
+
+- **goal** — the outcome committed to in that domain, stated so you could tell whether it landed
+- **strategy** — the position taken. **High level only.**
+- **measure** — the benchmark, standard or clause, with its anatomy beneath it
+
+**An objective with nothing recorded still renders.** An empty row is the most useful cell in the
+view — it says nobody has stated what this system does about that concern. Never omit one.
+
+#### The strategy altitude
+
+A strategy states a **position**, never a **mechanism**. Domain know-how belongs to \`dev\` and
+\`devops\`, and the audience for this view is senior management.
+
+So a strategy cell renders the position **plus a citation** to the \`dev\`/\`devops\` decisions that
+implement it — and never describes what they chose:
 
 \`\`\`
-<dimension>          the axis, and why it is an axis
-  chosen:            the point, and the scope it applies to
-  traded for:        what was given up to sit here
-  neighbour:         what the next point along would cost
+credentials never live in the repository          <- the position
+  → DEC-SECRET-STORE (dev)                        <- where the mechanism lives
 \`\`\`
+
+This needs no new rule to enforce. A mechanism detail belongs to a decision this hat does not own,
+so there is **no record you may cite for it** — and every claim must cite one. If you cannot write
+the sentence with a citation, it does not belong in this view.
+
+Where a strategy has nothing to cite, **say so**. Do not invent an implementation; the harvest
+reports the same gap as \`strategy-unimplemented\`.
+
+#### The strategy sub-framework — SWOT-like, deliberately not SWOT
+
+Where a strategy cites decisions, render four parts beneath the position (\`DEC-037\`). Each is
+**compiled from the ADR**, never authored here:
+
+| Part | Means here | Read it from |
+|---|---|---|
+| **Strength** | why this choice | the ✓ cells of the chosen column in \`## Consideration Factors\` |
+| **Weakness** | the trade-off it carries | the ✗ cells of the chosen column |
+| **Opportunity** | **the alternatives corresponding to the choice made** | the other columns of \`## Consideration Factors\` |
+| **Threat** | the risk, and what would mitigate it | \`## Invalidation Trigger\` |
+
+\`Opportunity\` is a **deliberate redefinition**. Standard SWOT means external upside; here it means
+the alternatives that were weighed. Stated so it does not read as a misunderstanding.
+
+\`\`\`
+credentials never live in the repository
+  → DEC-SECRET-STORE (dev)
+    strength:    rotation without a deploy; no secret in a diff, ever
+    weakness:    a hard runtime dependency on the store being reachable
+    opportunity: sealed secrets in-repo, and a KMS-encrypted env file
+    threat:      a store outage becomes a deploy outage — mitigated by a cached lease
+\`\`\`
+
+**Four parts, not four paragraphs.** Each is one line. If a part has no source in the ADR, write
+\`unrecorded\` — the compile reports what the record says, and a part invented to fill the shape is
+worse than an empty one. Never open the implementation to work out what the weakness must be.
+
+#### The measure anatomy
+
+A measure has four parts. The **bar** is written when the work is proposed; **posture**,
+**evidence** and **exposure** are written when it is attested. Render only what the record carries:
+
+\`\`\`
+bar:        dimension — the axis, and why it is an axis
+            chosen    — the point, and the scope it applies to
+            traded for— what was given up to sit here
+            neighbour — what the next point along would cost
+posture:    was the bar met — or, where no bar is set, the honest position
+evidence:   what asserts it
+exposure:   what remains at risk, and what is planned to close it
+\`\`\`
+
+#### The bar sub-framework — BDD, split by hat
+
+The bar's **statement** takes one of two forms, chosen by hat (\`DEC-038\`). The anatomy above says
+where the bar *sits*; the form says how CI tells you it is still there.
+
+**product** — a user story, because the persona and the reason are the point:
+
+\`\`\`
+as a    returning customer
+I want  my cart to survive a session expiry
+for     the checkout I abandoned on mobile to still be there on desktop
+\`\`\`
+
+**maintainer** — given / when / then, because the bar must be assessable from pipeline output:
+
+\`\`\`
+given  a credential is committed
+when   CI runs
+then   the build fails
+\`\`\`
+
+A maintainer bar written as a user story is an awkward fiction — *"as a maintainer, I want
+credentials not to be committed"* says less than the three lines above, and only those tell you
+what to point a pipeline at. **A bar in given/when/then form is already a test specification**,
+which is what makes \`DS-CI-ATTESTATION\` mechanically possible rather than aspirational: the gap
+between stating a bar and producing evidence for it is as small as it can be.
+
+\`dev\` and \`devops\` declare no form. They describe a system; they do not commit to a bar.
+
+**Posture, evidence and exposure stay prose.** Those are judgements and references, and imposing
+structure on them produces filled-in templates rather than thought. The structure is spent where it
+buys something.
 
 A bar stated without its trade reads like a law of nature when it was a purchase somebody made,
 and the receipt is what a maintainer picking up the hat actually needs. **If the records do not
-say what it cost, say the trade is unrecorded** — do not invent it.
-
-- **posture** — where the project *actually* sits against its bars, including deliberate gaps.
-  A deliberate gap cites the record that makes it deliberate, and its expiry where recorded.
-- **evidence** — what proves each bar, and whether the proof can be trusted.
-- **exposure** — what a breach costs and who it reaches.
+say what it cost, say the trade is unrecorded** — do not invent it. The same applies to a measure
+with no posture: an unattested measure is **decided, not true**, and must not be written in the
+present tense.
 
 **Cost is an axis of every bar, not a section.** A cost section would describe spend; a cost
-dimension describes the decision.
+dimension describes the decision. \`cost & budget\` as an objective is what the system costs to run
+and maintain — the business model belongs to product.
 
 ### dev and devops — describe the system
 
@@ -219,7 +337,7 @@ The boundary exists so an agent working on application code need not load pipeli
 
 ### open-loops — every hat has one
 
-Report **only** what the plan reported. The harvest supplies seven kinds:
+Report **only** what the plan reported. The harvest supplies eleven kinds:
 
 | Kind | Means |
 |---|---|
@@ -229,7 +347,14 @@ Report **only** what the plan reported. The harvest supplies seven kinds:
 | \`decision-unguarded\` | a decision no rule cites |
 | \`rule-guards-dead-record\` | a rule still guarding something superseded |
 | \`decision-on-superseded\` | a decision resting on an ancestor that moved |
-| \`record-unclassified\` | a record with no role, in a hat that declares roles |
+| \`record-unclassified\` | a driver-spec with no role, in a hat that declares roles |
+| \`measure-unasserted\` | a measure with no \`### Evidence\` — an aspiration |
+| \`measure-unexposed\` | a measure with no \`### Exposure\` |
+| \`bar-without-neighbour\` | a bar that does not state the position not taken |
+| \`record-without-objective\` | a record its hat's sections cannot select |
+| \`strategy-unimplemented\` | an approach with no decision descending from it |
+| \`bar-without-form\` | a bar in prose, in a hat whose bars take a form |
+| \`evidence-unresolvable\` | evidence citing nothing addressable, or a path not in the tree |
 
 **Do not infer a missing decision or a missing test from a record's content.** An invented gap
 costs someone a triage conversation about nothing, and the backlog is only useful while everything

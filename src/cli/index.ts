@@ -465,6 +465,55 @@ program
     }
   });
 
+program
+  .command('advance [initiative]')
+  .description("Move an initiative to its next state")
+  .option('--to <state>', 'The state to advance to')
+  .option('--hat <hat>', 'The accountability you are exercising — required on a handoff')
+  .option('--dry-run', 'Report the move without writing it')
+  .option('--json', 'Output as JSON')
+  .action(async (initiative: string | undefined, options: { to?: string; hat?: string; dryRun?: boolean; json?: boolean }) => {
+    try {
+      const { advanceCommand } = await import('../commands/advance.js');
+      await advanceCommand(initiative, options);
+    } catch (error) {
+      console.log();
+      ora().fail(`Error: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('frame')
+  .description('Report what this branch changes, and against what base')
+  .option('--json', 'Output as JSON')
+  .option('--base <ref>', 'Base branch to compare against, overriding the guess')
+  .action(async (options: { json?: boolean; base?: string }) => {
+    try {
+      const { frameCommand } = await import('../commands/frame.js');
+      await frameCommand(options);
+    } catch (error) {
+      console.log();
+      ora().fail(`Error: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('migrate')
+  .description('Report records the current hat shapes can no longer select')
+  .option('--json', 'Output as JSON')
+  .action(async (options: { json?: boolean }) => {
+    try {
+      const { migrateCommand } = await import('../commands/migrate.js');
+      await migrateCommand(options);
+    } catch (error) {
+      console.log();
+      ora().fail(`Error: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
 // Compact command — the deterministic half of /opsp:compact
 const compactCmd = program
   .command('compact')
@@ -474,7 +523,13 @@ compactCmd
   .command('plan')
   .description('Report which view sections need recompiling, and the records feeding them')
   .option('--json', 'Output as JSON')
-  .action(async (options: CompactOptions) => {
+  .option(
+    '--hat <name>',
+    'Report only this hat (repeatable)',
+    (value: string, previous: string[] = []) => [...previous, value]
+  )
+  .action(async (options: CompactOptions & { hat?: string[] }) => {
+    options.hats = options.hat;
     try {
       await compactPlanCommand(options);
     } catch (error) {
@@ -487,9 +542,28 @@ compactCmd
 compactCmd
   .command('seal')
   .description('Record the current views and their inputs in the provenance manifest')
+  .option(
+    '--hat <name>',
+    'Seal only this hat (repeatable). Other hats are carried forward untouched.',
+    (value: string, previous: string[] = []) => [...previous, value]
+  )
+  .action(async (options: { hat?: string[] }) => {
+    try {
+      await compactSealCommand({ hats: options.hat });
+    } catch (error) {
+      console.log();
+      ora().fail(`Error: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+compactCmd
+  .command('board')
+  .description('Regenerate BOARD.md from the initiatives')
   .action(async () => {
     try {
-      await compactSealCommand();
+      const { compactBoardCommand } = await import('../commands/compact.js');
+      await compactBoardCommand();
     } catch (error) {
       console.log();
       ora().fail(`Error: ${(error as Error).message}`);

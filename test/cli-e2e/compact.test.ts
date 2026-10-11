@@ -19,7 +19,7 @@ describe('opensprint compact (e2e)', () => {
     fs.writeFileSync(path.join(projectRoot, 'openspec', 'config.yaml'), 'schema: spec-driven\n');
     fs.writeFileSync(
       path.join(projectRoot, 'opensprint', 'driver-specs', 'DS-A.md'),
-      '---\nid: DS-A\ntype: product\nstatus: active\ncreated: 2026-01-01\nhats: [product]\nrole: goal\n---\n\nA constraint.\n\n## Measures\n\n- **Primary**: a number\n'
+      '---\nid: DS-A\ntype: product\nstatus: active\ncreated: 2026-01-01\nhats: [product]\nrole: goal\n---\n\nA constraint.\n\n## Measures\n\n- **Primary**: a number\n\n### Posture\n\n- **verdict**: met\n- **attested-by**: test\n- **attested-on**: 2026-01-01\n\n### Evidence\n\n`src/a.test.ts`\n\n### Exposure\n\nnone recorded\nmitigated-by: not-needed\n'
     );
     fs.writeFileSync(
       path.join(projectRoot, 'opensprint', 'ADRs', 'DEC-001.md'),
@@ -80,8 +80,9 @@ describe('opensprint compact (e2e)', () => {
     expect(fs.existsSync(manifest())).toBe(true);
     const parsed = JSON.parse(fs.readFileSync(manifest(), 'utf-8'));
     expect(parsed.version).toBe(1);
-    // Shapes differ per hat now: product 5, maintainer 5, dev 4, devops 3.
-    expect(parsed.entries.length).toBe(17);
+    // Shapes differ per hat: product 5, maintainer 9 (posture + seven
+    // inherited objectives + open-loops, DEC-018), dev 4, devops 3.
+    expect(parsed.entries.length).toBe(21);
   });
 
   it('seal reports a hat that has records but no view', async () => {
@@ -156,6 +157,170 @@ describe('opensprint compact (e2e)', () => {
       fs.rmSync(empty, { recursive: true, force: true });
     }
   });
+
+  // ═══════════════════════════════════════════════════════════
+  // plan --hat
+  // ═══════════════════════════════════════════════════════════
+
+  describe('plan --hat', () => {
+    const count = (out: string) => {
+      const m = out.match(/(\d+) section\(s\) need recompiling/);
+      return m ? Number(m[1]) : 0;
+    };
+
+    it('reports every hat when unfiltered', async () => {
+      const r = await runCLI(['compact', 'plan'], { cwd: projectRoot });
+      expect(count(r.stdout)).toBeGreaterThan(0);
+    });
+
+    it('reports fewer sections when filtered to one hat', async () => {
+      const all = await runCLI(['compact', 'plan'], { cwd: projectRoot });
+      const one = await runCLI(['compact', 'plan', '--hat', 'dev'], { cwd: projectRoot });
+      expect(count(one.stdout)).toBeGreaterThan(0);
+      expect(count(one.stdout)).toBeLessThan(count(all.stdout));
+    });
+
+    it('reports only the named hats', async () => {
+      const r = await runCLI(['compact', 'plan', '--hat', 'dev'], { cwd: projectRoot });
+      expect(r.stdout).toContain('dev/');
+      expect(r.stdout).not.toContain('product/');
+    });
+
+    it('accepts the flag repeatedly', async () => {
+      const one = await runCLI(['compact', 'plan', '--hat', 'dev'], { cwd: projectRoot });
+      const two = await runCLI(['compact', 'plan', '--hat', 'dev', '--hat', 'product'], {
+        cwd: projectRoot,
+      });
+      expect(count(two.stdout)).toBeGreaterThan(count(one.stdout));
+    });
+
+    it('filters the JSON form too', async () => {
+      const r = await runCLI(['compact', 'plan', '--json', '--hat', 'dev'], { cwd: projectRoot });
+      const parsed = JSON.parse(r.stdout);
+      expect(parsed.sections.length).toBeGreaterThan(0);
+      for (const s of parsed.sections) expect(s.hat).toBe('dev');
+    });
+
+    // A loop belongs to the records, not to a view section, so narrowing the
+    // plan must not hide one.
+    it('does not filter open loops', async () => {
+      const all = await runCLI(['compact', 'plan', '--json'], { cwd: projectRoot });
+      const one = await runCLI(['compact', 'plan', '--json', '--hat', 'dev'], { cwd: projectRoot });
+      expect(JSON.parse(one.stdout).openLoops).toEqual(JSON.parse(all.stdout).openLoops);
+    });
+
+    it('warns on an unknown hat and reports everything', async () => {
+      const all = await runCLI(['compact', 'plan'], { cwd: projectRoot });
+      const r = await runCLI(['compact', 'plan', '--hat', 'nonsense'], { cwd: projectRoot });
+      expect(r.exitCode).toBe(0);
+      expect(r.stdout + r.stderr).toMatch(/Unknown hat 'nonsense'/);
+      expect(count(r.stdout)).toBe(count(all.stdout));
+    });
+  });
+
+  // ═══════════════════════════════════════════════════════════
+  // DEC-SCOPED-SEAL — scoped, and never blessing what it did not render
+  // ═══════════════════════════════════════════════════════════
+
+  describe('scoped sealing', () => {
+    const view = (hat: string) => path.join(squadDir(), `${hat}.md`);
+    const entriesFor = (hat: string) =>
+      JSON.parse(fs.readFileSync(manifest(), 'utf-8')).entries.filter(
+        (e: { hat: string }) => e.hat === hat
+      );
+    const write = (hat: string, body: string) => {
+      fs.mkdirSync(squadDir(), { recursive: true });
+      fs.writeFileSync(view(hat), body);
+    };
+    /** Changes an input so every section's inputHash moves. */
+    const touchRecords = () =>
+      fs.writeFileSync(
+        path.join(projectRoot, 'opensprint', 'driver-specs', 'DS-B.md'),
+        '---\nid: DS-B\ntype: product\nstatus: active\ncreated: 2026-01-01\nhats: [product, dev]\nrole: goal\n---\n\nAnother.\n'
+      );
+
+    it('seals every hat when no scope is given', async () => {
+      for (const hat of ['product', 'maintainer', 'dev', 'devops']) write(hat, `# ${hat}\n`);
+      const r = await runCLI(['compact', 'seal'], { cwd: projectRoot });
+      expect(r.exitCode).toBe(0);
+      for (const hat of ['product', 'maintainer', 'dev', 'devops']) {
+        expect(entriesFor(hat).length).toBeGreaterThan(0);
+      }
+    });
+
+    it('leaves an out-of-scope hat untouched when its inputs move', async () => {
+      for (const hat of ['product', 'maintainer', 'dev', 'devops']) write(hat, `# ${hat}\n`);
+      await runCLI(['compact', 'seal'], { cwd: projectRoot });
+      const before = entriesFor('product').map((e: { inputHash: string }) => e.inputHash);
+
+      // inputs move, and only dev is re-rendered and sealed
+      touchRecords();
+      write('dev', '# dev, rewritten\n');
+      await runCLI(['compact', 'seal', '--hat', 'dev'], { cwd: projectRoot });
+
+      expect(entriesFor('product').map((e: { inputHash: string }) => e.inputHash)).toEqual(before);
+    });
+
+    it('reseals a hat whose view changed', async () => {
+      write('dev', '# dev\n');
+      await runCLI(['compact', 'seal'], { cwd: projectRoot });
+      const before = entriesFor('dev')[0].outputHash;
+
+      write('dev', '# dev, rewritten\n');
+      await runCLI(['compact', 'seal', '--hat', 'dev'], { cwd: projectRoot });
+      expect(entriesFor('dev')[0].outputHash).not.toBe(before);
+    });
+
+    // The bug this decision exists for: render one hat, seal, and the others
+    // were marked fresh while stale.
+    it('does not bless a hat whose view was not re-rendered, even in scope', async () => {
+      for (const hat of ['product', 'maintainer', 'dev', 'devops']) write(hat, `# ${hat}\n`);
+      await runCLI(['compact', 'seal'], { cwd: projectRoot });
+      const before = entriesFor('product').map((e: { inputHash: string }) => e.inputHash);
+
+      touchRecords();
+      // product is explicitly in scope, but its view was never re-rendered
+      const r = await runCLI(['compact', 'seal', '--hat', 'product'], { cwd: projectRoot });
+      expect(r.exitCode).toBe(0);
+      expect(entriesFor('product').map((e: { inputHash: string }) => e.inputHash)).toEqual(before);
+    });
+
+    it('regression: sealing after rendering one hat leaves the others stale', async () => {
+      for (const hat of ['product', 'maintainer', 'dev', 'devops']) write(hat, `# ${hat}\n`);
+      await runCLI(['compact', 'seal'], { cwd: projectRoot });
+      expect((await runCLI(['compact', 'check'], { cwd: projectRoot })).exitCode).toBe(0);
+
+      touchRecords();
+      write('dev', '# dev, rewritten\n');
+      await runCLI(['compact', 'seal'], { cwd: projectRoot });
+
+      const check = await runCLI(['compact', 'check'], { cwd: projectRoot });
+      expect(check.exitCode).toBe(1);
+      expect(check.stdout).toContain('product');
+    });
+
+    it('reports what it carried forward', async () => {
+      for (const hat of ['product', 'maintainer', 'dev', 'devops']) write(hat, `# ${hat}\n`);
+      await runCLI(['compact', 'seal'], { cwd: projectRoot });
+      const r = await runCLI(['compact', 'seal'], { cwd: projectRoot });
+      expect(r.stdout).toContain('carried forward');
+      expect(r.stdout).toMatch(/Sealed 0 section/);
+    });
+
+    it('warns on an unknown hat and does not fail', async () => {
+      write('dev', '# dev\n');
+      const r = await runCLI(['compact', 'seal', '--hat', 'nonsense'], { cwd: projectRoot });
+      expect(r.exitCode).toBe(0);
+      expect(r.stdout + r.stderr).toMatch(/Unknown hat 'nonsense'/);
+    });
+
+    it('seals for the first time with no prior manifest', async () => {
+      write('dev', '# dev\n');
+      expect(fs.existsSync(manifest())).toBe(false);
+      const r = await runCLI(['compact', 'seal', '--hat', 'dev'], { cwd: projectRoot });
+      expect(r.exitCode).toBe(0);
+      expect(entriesFor('dev').length).toBeGreaterThan(0);
+    });
 });
 
 describe('opensprint compact loops (e2e)', () => {
@@ -170,7 +335,7 @@ describe('opensprint compact loops (e2e)', () => {
     fs.writeFileSync(path.join(projectRoot, 'openspec', 'config.yaml'), 'schema: spec-driven\n');
     fs.writeFileSync(
       path.join(projectRoot, 'opensprint', 'driver-specs', 'DS-A.md'),
-      '---\nid: DS-A\ntype: product\nstatus: active\ncreated: 2026-01-01\nhats: [product]\nrole: goal\n---\n\nA constraint.\n\n## Measures\n\n- **Primary**: a number\n'
+      '---\nid: DS-A\ntype: product\nstatus: active\ncreated: 2026-01-01\nhats: [product]\nrole: goal\n---\n\nA constraint.\n\n## Measures\n\n- **Primary**: a number\n\n### Posture\n\n- **verdict**: met\n- **attested-by**: test\n- **attested-on**: 2026-01-01\n\n### Evidence\n\n`src/a.test.ts`\n\n### Exposure\n\nnone recorded\nmitigated-by: not-needed\n'
     );
     fs.writeFileSync(
       path.join(projectRoot, 'opensprint', 'ADRs', 'DEC-001.md'),
@@ -194,6 +359,28 @@ describe('opensprint compact loops (e2e)', () => {
     const r = await runCLI(['compact', 'loops'], { cwd: projectRoot });
     expect(r.exitCode).toBe(0);
     expect(r.stdout).toContain('No open loops');
+  });
+
+  it('reports evidence citing a path that is not in the tree, naming it', async () => {
+    const r = await runCLI(['compact', 'loops'], { cwd: projectRoot });
+    expect(r.stdout).toContain('evidence-unresolvable');
+    expect(r.stdout).toContain('src/a.test.ts');
+  });
+
+  it('stops reporting once the cited artifact exists', async () => {
+    fs.writeFileSync(path.join(projectRoot, 'src', 'a.test.ts'), '// guards DEC-001\n');
+    const r = await runCLI(['compact', 'loops'], { cwd: projectRoot });
+    expect(r.stdout).not.toContain('evidence-unresolvable');
+  });
+
+  it('does not resolve a path that escapes the project root', async () => {
+    const dsPath = path.join(projectRoot, 'opensprint', 'driver-specs', 'DS-A.md');
+    fs.writeFileSync(
+      dsPath,
+      fs.readFileSync(dsPath, 'utf-8').replace('`src/a.test.ts`', '`../elsewhere/report.txt`')
+    );
+    const r = await runCLI(['compact', 'loops'], { cwd: projectRoot });
+    expect(r.stdout).not.toContain('evidence-unresolvable');
   });
 
   it('names both triage workflows when loops exist', async () => {
@@ -239,5 +426,7 @@ describe('opensprint compact loops (e2e)', () => {
     // ...and check does not care: a gap is backlog, not a contradiction
     const check = await runCLI(['compact', 'check'], { cwd: projectRoot });
     expect(check.exitCode).toBe(0);
+  });
+
   });
 });
