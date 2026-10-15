@@ -5,6 +5,10 @@ Compiled by `/opsp:compact` from `opensprint/initiatives/`. **Derived — do not
 **Moving a card means changing a record's state**, not editing this file. A peer of
 `DECISION-MAP.md`: cross-cutting rather than hat-scoped, so it is not a squad view (`DEC-026`).
 
+It shows the initiatives in this checkout. Each one lives on its own `opsp/<id>` branch until it
+merges (`DEC-029`), so `opensprint compact board --all-branches` prints the rest without writing
+this file.
+
 ## Backlog
 
 Ideas captured, not yet triaged.
@@ -33,14 +37,13 @@ _Empty._
 
 Closed.
 
-| Initiative | State | Milestones | Next |
-|---|---|---|---|
-| [parallel-universe-reconciliation](initiatives/20260522-parallel-universe-reconciliation.md) | _(none — status: completed)_ | 4/4 | — |
-| [compact-surrogate](initiatives/20260926-compact-surrogate.md) | _(none — status: completed)_ | 9/9 | — |
-| [lifecycle-beyond-build](initiatives/20261001-lifecycle-beyond-build.md) | completed | 11/11 _(+1 superseded)_ | — |
-| [sdlc-operating-contract](initiatives/20261009-sdlc-operating-contract.md) | completed | 12/12 | — |
-| [surrogate-currency](initiatives/20261010-surrogate-currency.md) | completed | 5/5 | — |
-| [load-hat-views](initiatives/20261018-load-hat-views.md) | completed | 1/1 | — |
+| Initiative | State | Owner | Milestones | Next |
+|---|---|---|---|---|
+| [parallel-universe-reconciliation](initiatives/20260522-parallel-universe-reconciliation.md) | _(none — status: completed)_ | — | 4/4 | — |
+| [compact-surrogate](initiatives/20260926-compact-surrogate.md) | _(none — status: completed)_ | — | 9/9 | — |
+| [lifecycle-beyond-build](initiatives/20261001-lifecycle-beyond-build.md) | completed | — | 11/11 _(+1 superseded)_ | — |
+| [sdlc-operating-contract](initiatives/20261009-sdlc-operating-contract.md) | completed | — | 12/12 | — |
+| [surrogate-currency](initiatives/20261010-surrogate-currency.md) | completed | — | 5/5 | — |
 
 ## Declined
 
@@ -68,7 +71,6 @@ risk, and **that initiative's state is the assurance level**.
 | `DS-MEASURE-ANATOMY` | A compiled view could state a bar with no posture and no test would fail; only the record-level harvest would notice. | **nothing** | a confession |
 | `DS-PROGRESSIVE-CRYSTALLIZATION` | The **Primary** bar has drifted from what shipped and needs revising through `/opsp:decide`. | **nothing** | a confession |
 | `DS-STRATEGY-ALTITUDE` | A regression in `strategy-unimplemented` would pass the suite. | **nothing** | a confession |
-| `DS-SURROGATE-BUDGET` | What each load step says to do with an `unsealed` or `tampered` section, and propose's rule for a `stale` one, is una… | **nothing** | a confession |
 | `DS-SURROGATE-GIT-CONTRACT` | An `opsp/*` branch can merge to `main` unattested, this one included. | **nothing** | a confession |
 | `DS-VIEW-AUTHORSHIP` | A hand-edited view can be sealed as if rendered, and which hat compiled a view is not recorded anywhere it could be a… | **nothing** | a confession |
 
