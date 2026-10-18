@@ -5,10 +5,12 @@
 ```
 DS-ATTEST-AS-REVIEW (product)
 ├── DEC-040: [[DEC-033]] excluded the entire implementation from the attester's context, on t
-│   [root] [blast: 2]
+│   [root] [blast: 3]
 │   ├── DEC-043: [[DEC-040]] puts test files in the attester's context. The agent that wrote thos
 │   │   [leaf] [blast: 0]
-│   └── DEC-ATTEST-CHANGE-FRAME: `/opsp:attest` reviews an initiative. It never established *what change* it was 
+│   ├── DEC-ATTEST-CHANGE-FRAME: `/opsp:attest` reviews an initiative. It never established *what change* it was 
+│   │   [leaf] [blast: 0]
+│   └── DEC-ATTEST-OWNING-SECTION: Once workflows orient on the per-hat views ([[DEC-VIEWS-FIRST-LOAD]]), what may 
 │       [leaf] [blast: 0]
 ├── DEC-041: [[DEC-019]] gives a measure four parts, and the harvest reports `measure-unasser
 │   [leaf] [blast: 0]
@@ -327,17 +329,19 @@ DS-SME-OWNERSHIP (business)
 │   ├── DEC-008: A hat's charter states what it owns, what it may not trade away, and when it esc
 │   │   [leaf] [blast: 0]
 │   ├── DEC-009: A compiled view is a synthesis. How does a reader — human or agent — get from a 
-│   │   [branch] [blast: 5]
+│   │   [branch] [blast: 6]
 │   │   ├── DEC-020: [[DS-STRATEGY-ALTITUDE]] requires maintainer strategies to stay above domain kno
 │   │   │   [branch] [blast: 1]
 │   │   │   └── DEC-037: [[DS-MAINTAINER-INHERITED]] gives each objective a Strategy cell, and [[DEC-020]
 │   │   │       [leaf] [blast: 0]
-│   │   └── DEC-021: [[DEC-009]] gives a compiled claim two possible citations: a record id where a d
-│   │       [branch] [blast: 2]
-│   │       └── DEC-031: `/opsp:compact` and `/opsp:archive` are separate operator-invoked tools that bot
-│   │           [branch] [blast: 1]
-│   │           └── DEC-COMPILE-ON-MILESTONE: `dev` and `devops` views move on the code clock and are compiled only at archive
-│   │               [leaf] [blast: 0]
+│   │   ├── DEC-021: [[DEC-009]] gives a compiled claim two possible citations: a record id where a d
+│   │   │   [branch] [blast: 2]
+│   │   │   └── DEC-031: `/opsp:compact` and `/opsp:archive` are separate operator-invoked tools that bot
+│   │   │       [branch] [blast: 1]
+│   │   │       └── DEC-COMPILE-ON-MILESTONE: `dev` and `devops` views move on the code clock and are compiled only at archive
+│   │   │           [leaf] [blast: 0]
+│   │   └── DEC-VIEWS-FIRST-LOAD: [[DEC-015]] deferred the switch: v1 compiled the views, the manifest and `compac
+│   │       [leaf] [blast: 0]
 │   ├── DEC-010: How does the system know a compiled view is current, and how is a stale view pre
 │   │   [branch] [blast: 13]
 │   │   ├── DEC-011: When records change, should `compact` update the affected view sections incremen
@@ -404,8 +408,6 @@ DS-SME-OWNERSHIP (business)
 │   │       [branch] [blast: 1]
 │   │       └── DEC-COMPILE-ON-MILESTONE: `dev` and `devops` views move on the code clock and are compiled only at archive
 │   │           [leaf] [blast: 0]
-│   ├── DEC-015: The point of compaction is that agents load the compacted surrogate instead of t
-│   │   [leaf] [blast: 0]
 │   ├── DEC-022: Attestation produces posture, evidence and exposure against a bar ([[DS-MEASURE-
 │   │   [branch] [blast: 6]
 │   │   ├── DEC-023: [[DS-SURROGATE-SCOPE]] places certification, change management and release manag
@@ -437,17 +439,19 @@ DS-SQUAD-HATS (architecture)
 │   ├── DEC-008: A hat's charter states what it owns, what it may not trade away, and when it esc
 │   │   [leaf] [blast: 0]
 │   ├── DEC-009: A compiled view is a synthesis. How does a reader — human or agent — get from a 
-│   │   [branch] [blast: 5]
+│   │   [branch] [blast: 6]
 │   │   ├── DEC-020: [[DS-STRATEGY-ALTITUDE]] requires maintainer strategies to stay above domain kno
 │   │   │   [branch] [blast: 1]
 │   │   │   └── DEC-037: [[DS-MAINTAINER-INHERITED]] gives each objective a Strategy cell, and [[DEC-020]
 │   │   │       [leaf] [blast: 0]
-│   │   └── DEC-021: [[DEC-009]] gives a compiled claim two possible citations: a record id where a d
-│   │       [branch] [blast: 2]
-│   │       └── DEC-031: `/opsp:compact` and `/opsp:archive` are separate operator-invoked tools that bot
-│   │           [branch] [blast: 1]
-│   │           └── DEC-COMPILE-ON-MILESTONE: `dev` and `devops` views move on the code clock and are compiled only at archive
-│   │               [leaf] [blast: 0]
+│   │   ├── DEC-021: [[DEC-009]] gives a compiled claim two possible citations: a record id where a d
+│   │   │   [branch] [blast: 2]
+│   │   │   └── DEC-031: `/opsp:compact` and `/opsp:archive` are separate operator-invoked tools that bot
+│   │   │       [branch] [blast: 1]
+│   │   │       └── DEC-COMPILE-ON-MILESTONE: `dev` and `devops` views move on the code clock and are compiled only at archive
+│   │   │           [leaf] [blast: 0]
+│   │   └── DEC-VIEWS-FIRST-LOAD: [[DEC-015]] deferred the switch: v1 compiled the views, the manifest and `compac
+│   │       [leaf] [blast: 0]
 │   ├── DEC-010: How does the system know a compiled view is current, and how is a stale view pre
 │   │   [branch] [blast: 13]
 │   │   ├── DEC-011: When records change, should `compact` update the affected view sections incremen
@@ -514,8 +518,6 @@ DS-SQUAD-HATS (architecture)
 │   │       [branch] [blast: 1]
 │   │       └── DEC-COMPILE-ON-MILESTONE: `dev` and `devops` views move on the code clock and are compiled only at archive
 │   │           [leaf] [blast: 0]
-│   ├── DEC-015: The point of compaction is that agents load the compacted surrogate instead of t
-│   │   [leaf] [blast: 0]
 │   ├── DEC-022: Attestation produces posture, evidence and exposure against a bar ([[DS-MEASURE-
 │   │   [branch] [blast: 6]
 │   │   ├── DEC-023: [[DS-SURROGATE-SCOPE]] places certification, change management and release manag
@@ -559,18 +561,22 @@ DS-STRATEGY-ALTITUDE (product)
 
 DS-SURROGATE-BUDGET (reliability)
 ├── DEC-009: A compiled view is a synthesis. How does a reader — human or agent — get from a 
-│   [branch] [blast: 5]
+│   [branch] [blast: 6]
 │   ├── DEC-020: [[DS-STRATEGY-ALTITUDE]] requires maintainer strategies to stay above domain kno
 │   │   [branch] [blast: 1]
 │   │   └── DEC-037: [[DS-MAINTAINER-INHERITED]] gives each objective a Strategy cell, and [[DEC-020]
 │   │       [leaf] [blast: 0]
-│   └── DEC-021: [[DEC-009]] gives a compiled claim two possible citations: a record id where a d
-│       [branch] [blast: 2]
-│       └── DEC-031: `/opsp:compact` and `/opsp:archive` are separate operator-invoked tools that bot
-│           [branch] [blast: 1]
-│           └── DEC-COMPILE-ON-MILESTONE: `dev` and `devops` views move on the code clock and are compiled only at archive
-│               [leaf] [blast: 0]
-└── DEC-015: The point of compaction is that agents load the compacted surrogate instead of t
+│   ├── DEC-021: [[DEC-009]] gives a compiled claim two possible citations: a record id where a d
+│   │   [branch] [blast: 2]
+│   │   └── DEC-031: `/opsp:compact` and `/opsp:archive` are separate operator-invoked tools that bot
+│   │       [branch] [blast: 1]
+│   │       └── DEC-COMPILE-ON-MILESTONE: `dev` and `devops` views move on the code clock and are compiled only at archive
+│   │           [leaf] [blast: 0]
+│   └── DEC-VIEWS-FIRST-LOAD: [[DEC-015]] deferred the switch: v1 compiled the views, the manifest and `compac
+│       [leaf] [blast: 0]
+├── DEC-NO-DEFAULT-ARCHITECTURE-LOAD: Every surrogate load step read `architecture.md` and `DECISION-MAP.md` alongside
+│   [root] [blast: 0]
+└── DEC-VIEWS-FIRST-LOAD: [[DEC-015]] deferred the switch: v1 compiled the views, the manifest and `compac
     [leaf] [blast: 0]
 
 DS-SURROGATE-GIT-CONTRACT (architecture)
@@ -608,24 +614,24 @@ DS-VIEW-AUTHORSHIP (architecture)
 |----------|-------|------------|------------|-------|
 | DEC-001 | 0 | DS-PARALLEL-EXEC | DEC-003, DEC-029, DEC-036 | 4 |
 | DEC-002 | 0 | DS-HIGH-IMPACT-OPS | DEC-004 | 1 |
-| DEC-006 | 0 | DS-SQUAD-HATS, DS-SME-OWNERSHIP | DEC-007, DEC-008, DEC-009, DEC-010, DEC-014, DEC-015, DEC-022, DEC-027 | 29 |
+| DEC-006 | 0 | DS-SQUAD-HATS, DS-SME-OWNERSHIP | DEC-007, DEC-008, DEC-009, DEC-010, DEC-014, DEC-022, DEC-027 | 29 |
 | DEC-013 | 0 | DS-LOOP-CLOSURE | — | 0 |
 | DEC-016 | 0 | DS-SQUAD-HATS | DEC-028 | 2 |
 | DEC-017 | 0 | DS-SELF-USE-SCOPE | — | 0 |
 | DEC-018 | 0 | DS-MAINTAINER-INHERITED, DS-BACKWARD-COMPAT | DEC-MIGRATE-SEPARATE-TOOL | 1 |
 | DEC-019 | 0 | DS-MEASURE-ANATOMY, DS-BACKWARD-COMPAT | DEC-032, DEC-038, DEC-041, DEC-BAR-AT-PROPOSE | 4 |
 | DEC-034 | 0 | DS-PROGRESSIVE-CRYSTALLIZATION, DS-HATS-AS-CONTEXT | DEC-039 | 4 |
-| DEC-040 | 0 | DS-ATTEST-AS-REVIEW | DEC-043, DEC-ATTEST-CHANGE-FRAME | 2 |
+| DEC-040 | 0 | DS-ATTEST-AS-REVIEW | DEC-043, DEC-ATTEST-CHANGE-FRAME, DEC-ATTEST-OWNING-SECTION | 3 |
 | DEC-ESCALATION-IS-A-STAGE | 0 | DS-ESCALATION-HANDOFF | DEC-COMPILE-ON-APPROVAL | 1 |
 | DEC-KNOCKDOWN-ALL-VIEWS | 0 | DS-VIEW-AUTHORSHIP, DS-FULL-COVERAGE | — | 0 |
+| DEC-NO-DEFAULT-ARCHITECTURE-LOAD | 0 | DS-SURROGATE-BUDGET | — | 0 |
 | DEC-003 | 1 | DEC-001 | DEC-005 | 1 |
 | DEC-004 | 1 | DS-HIGH-IMPACT-OPS, DEC-002 | — | 0 |
 | DEC-007 | 1 | DS-LOOP-CLOSURE, DEC-006 | — | 0 |
 | DEC-008 | 1 | DEC-006, DS-SME-OWNERSHIP | — | 0 |
-| DEC-009 | 1 | DEC-006, DS-SURROGATE-BUDGET | DEC-020, DEC-021 | 5 |
+| DEC-009 | 1 | DEC-006, DS-SURROGATE-BUDGET | DEC-020, DEC-021, DEC-VIEWS-FIRST-LOAD | 6 |
 | DEC-010 | 1 | DEC-006, DS-LOOP-CLOSURE | DEC-011, DEC-024, DEC-030, DEC-SCOPED-SEAL | 13 |
 | DEC-014 | 1 | DEC-006 | DEC-022, DEC-026, DEC-031 | 10 |
-| DEC-015 | 1 | DS-SURROGATE-BUDGET, DEC-006 | — | 0 |
 | DEC-028 | 1 | DS-SQUAD-HATS, DEC-016 | DEC-CLASSIFY-IN-QUESTION | 1 |
 | DEC-029 | 1 | DS-SURROGATE-GIT-CONTRACT, DEC-001 | — | 0 |
 | DEC-032 | 1 | DS-CI-ATTESTATION, DEC-019 | — | 0 |
@@ -633,6 +639,7 @@ DS-VIEW-AUTHORSHIP (architecture)
 | DEC-039 | 1 | DS-PROGRESSIVE-CRYSTALLIZATION, DEC-034 | DEC-ESCALATION-LADDER | 3 |
 | DEC-041 | 1 | DS-ATTEST-AS-REVIEW, DEC-019 | — | 0 |
 | DEC-ATTEST-CHANGE-FRAME | 1 | DEC-040, DEC-030, DS-ATTEST-AS-REVIEW | — | 0 |
+| DEC-ATTEST-OWNING-SECTION | 1 | DEC-040 | — | 0 |
 | DEC-CLASSIFY-IN-QUESTION | 1 | DS-ESCALATION-HANDOFF, DEC-028 | — | 0 |
 | DEC-COMPILE-ON-APPROVAL | 1 | DS-VIEW-AUTHORSHIP, DS-ESCALATION-HANDOFF, DEC-ESCALATION-IS-A-STAGE | — | 0 |
 | DEC-MIGRATE-SEPARATE-TOOL | 1 | DS-BACKWARD-COMPAT, DEC-018 | — | 0 |
@@ -651,6 +658,7 @@ DS-VIEW-AUTHORSHIP (architecture)
 | DEC-BAR-AT-PROPOSE | 2 | DEC-027, DEC-038, DEC-019, DS-PROGRESSIVE-CRYSTALLIZATION | — | 0 |
 | DEC-ESCALATION-LADDER | 2 | DEC-STATE-MACHINE, DS-ESCALATION-HANDOFF, DS-PROGRESSIVE-CRYSTALLIZATION, DEC-039 | DEC-HAT-HANDOFFS | 2 |
 | DEC-SCOPED-SEAL | 2 | DS-VIEW-AUTHORSHIP, DEC-010 | DEC-COMPILE-ON-MILESTONE | 1 |
+| DEC-VIEWS-FIRST-LOAD | 2 | DS-SURROGATE-BUDGET, DEC-009 | — | 0 |
 | DEC-023 | 3 | DS-SURROGATE-SCOPE, DEC-022 | DEC-030 | 2 |
 | DEC-027 | 3 | DEC-022, DEC-006 | DEC-044, DEC-BAR-AT-PROPOSE | 2 |
 | DEC-031 | 3 | DS-ATTESTED-TRUTH, DEC-014, DEC-021 | DEC-COMPILE-ON-MILESTONE | 1 |

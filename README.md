@@ -84,7 +84,7 @@ npx @ivan-lee/opensprint init
 A first cycle:
 
 ```bash
-/opsp:explore          # think at initiative level, with the full surrogate loaded
+/opsp:explore          # think at initiative level, with the product and maintainer views loaded
 /opsp:propose          # classify the conversation into driver-specs, ADRs, milestones
 /opsp:apply <name>     # execute, escalating only what the surrogate cannot answer
 /opsp:archive <name>   # compile the architectural state

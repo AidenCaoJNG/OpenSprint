@@ -194,9 +194,9 @@ code.
 
 ### What each workflow loads
 
-Agents orient on the compiled views in `opensprint/squad/`, not on every record
-(`DS-SURROGATE-BUDGET`). A view cites the record behind every claim, so an agent opens the full
-record only for the decision it is about to act on.
+Agents orient on the compiled views in `opensprint/squad/`, not on every record. A view cites the
+record behind every claim, so an agent opens the full record only for the decision it is about to
+act on.
 
 | Workflow | Loads | Opens when it needs to |
 |---|---|---|
