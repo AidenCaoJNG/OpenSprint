@@ -76,7 +76,11 @@ about 93K to 106K tokens, `/opsp:explore` loaded about 127K to 157K, and ADRs ma
 every load (`DS-SURROGATE-BUDGET`). The saving applies to orientation, not to judgement: an agent
 acting on a decision still reads that decision's full record (`DS-SURROGATE-BUDGET`).
 
-The record sets no target, so nothing says when this goal has landed. See Measures.
+The bar was written when this work was backfilled: each planning and build skill names the views
+it reads, falls back to every record only where the engine cannot run, opens a full record for the
+decision it acts on, and says what to do with each section `compact plan` reports not fresh
+(`DS-SURROGATE-BUDGET`). It is attested **partially met** on 2026-10-18 (`DS-SURROGATE-BUDGET`). See
+Measures.
 
 ## Strategies
 
@@ -232,12 +236,12 @@ no exposure names a `mitigated-by`. `DS-SQUAD-HATS`, `DS-SME-OWNERSHIP`, `DS-LOO
 
 ## Measures
 
-For each goal: what measures it, and what asserts that measure. The plan classifies all four goal
-records as **decided**; none is `attested`. So every bar below is a commitment, not a property the
-system is known to have. Where a check exists, it is cited by path, and that citation is
-**observed** (it shows what the test exercises), not a verdict on the bar. None of these records
-says what its bar traded away or what the next point along would cost: **the trade is unrecorded
-for every bar here.**
+For each goal: what measures it, and what asserts that measure. The plan classifies three of the
+four goal records as **decided**; only `DS-SURROGATE-BUDGET` is `attested`. So every other bar below
+is a commitment, not a property the system is known to have. Where a check exists, it is cited by
+path, and that citation is **observed** (it shows what the test exercises), not a verdict on the bar.
+Only `DS-SURROGATE-BUDGET` says what its bar traded away; for the other three **the trade is
+unrecorded**.
 
 ```
 goal                         record                      measures             posture
@@ -246,7 +250,8 @@ all four accountabilities    DS-FULL-COVERAGE            primary, guardrail   no
 documentation is compiled    DS-DOCUMENTATION-AS-OUTPUT  primary, guardrail   none recorded
 true only once attested      DS-ATTESTED-TRUTH           primary, guardrail,  partially met, no
                                                          freshness            evidence: decided
-surrogate within budget      DS-SURROGATE-BUDGET         none                 n/a
+surrogate within budget      DS-SURROGATE-BUDGET         primary, guardrail,  partially met,
+                                                         trust                attested
 ```
 
 ### Cover all four accountabilities
@@ -298,10 +303,35 @@ surrogate within budget      DS-SURROGATE-BUDGET         none                 n/
 
 ### Loading the surrogate must not consume the session budget
 
-**No measure.** `DS-SURROGATE-BUDGET` has no `## Measures` section, and the plan reports it as
-`constraint-unmeasurable`. Its rationale records load sizes measured across three projects (ADRs at
-61–74% of every load). Those figures describe the problem. They do not set a bar, so nothing says
-how this goal is known to be met.
+```
+as a    developer running /opsp:apply, /opsp:explore, /opsp:triage or /opsp:propose
+        on a mature surrogate
+I want  the agent to orient on the compiled per-hat views and open a full record only
+        for the decision it acts on
+for     the session budget to go to the work rather than to loading every record
+```
+
+- **Primary**: every load step in those four skills names the views it reads and never loads every
+  record; every record appears only as the fallback where `opensprint compact` cannot run, or where
+  the records predate hats (`DS-SURROGATE-BUDGET`).
+- **Guardrail**: an agent opens the full record for the decision it is about to act on, and
+  `/opsp:apply` reads the initiative's own driver-specs and ADRs in full (`DS-SURROGATE-BUDGET`).
+- **Trust**: each load step asks `compact plan` whether the views can be trusted and says what to do
+  with every section state that is not fresh (`DS-SURROGATE-BUDGET`).
+- **Bar**: on the axis of orientation cost against grounding in the record, the chosen point is
+  views first and the full record on demand. It trades away certainty between compiles: a view can
+  be wrong, and the bar relies on `compact plan` reporting it. The neighbour is loading every
+  record, which `DEC-015` deferred to and `DEC-VIEWS-FIRST-LOAD` supersedes (`DS-SURROGATE-BUDGET`).
+- **Posture**: **partially met**, attested on 2026-10-18 by Claude Opus 5.5 for Ivan Lee. The
+  attesting session also edited these tests and wrote this bar, and the operator overrode `DEC-043`
+  to let it attest (`DS-SURROGATE-BUDGET`). Primary and Guardrail are asserted for all four skills.
+  Trust is partly asserted: what a step does with an `unsealed` or `tampered` section is checked
+  only by the words appearing, and propose's stale rule is not checked.
+- **Evidence**: `test/core/opsp-load-views.test.ts` (`DS-SURROGATE-BUDGET`).
+- **Exposure**: either unasserted rule could be reworded away with the suite still green, and every
+  assertion is on instruction text, so nothing measures what an agent actually loads or the tokens
+  it saves (`DS-SURROGATE-BUDGET`). It names no `mitigated-by`, and the plan reports it as
+  `exposure-unmitigated`.
 
 ## Open Loops
 
@@ -318,12 +348,6 @@ _No active decision answers this constraint._
 ### `constraint-unasserted` — answered, but no rule cites any answering decision
 
 - `DS-STRATEGY-ALTITUDE` — Answered by `DEC-020`, but no rule cites any of them.
-
-### `constraint-unmeasurable` — stated as a goal, with no populated `## Measures`
-
-- `DS-SURROGATE-BUDGET`
-
-_Stated as a goal but carries no populated '## Measures' section — nothing says how it is known to be met._
 
 ### `strategy-unimplemented` — an approach with no decision descending from it
 
@@ -351,6 +375,7 @@ _States a measure with no `### Posture`. Nobody has judged whether the bar was m
 - `DS-MEASURE-ANATOMY`
 - `DS-PROGRESSIVE-CRYSTALLIZATION`
 - `DS-STRATEGY-ALTITUDE`
+- `DS-SURROGATE-BUDGET`
 - `DS-SURROGATE-GIT-CONTRACT`
 - `DS-VIEW-AUTHORSHIP`
 

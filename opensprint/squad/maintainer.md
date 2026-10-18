@@ -104,6 +104,12 @@ checks two, neither of them `attested` (**Guardrail**); and that a verdict with 
 Exposure as recorded: a compiled view may state present-tense claims with no attestation behind them,
 and the decided / observed / attested distinction is unverified in rendered output
 (`DS-ATTESTED-TRUTH`).
+Observed since: `/opsp:apply`, `/opsp:explore`, `/opsp:triage` and `/opsp:propose` orient on these
+views before any record, so a compiled claim is now the first thing an agent acts on. Where
+`compact plan` reports a section stale they also read what moved since it was compiled, and they set
+aside one it reports unsealed or tampered and read its records instead
+(`src/core/templates/workflows/opsp-apply.ts` and its siblings). The exposure stands as recorded:
+nothing checks the tense of a claim in a fresh view.
 
 **Measure — the strategy.** No operation that mutates the canonical surrogate is reachable from a
 pipeline, a sub-agent or another skill (`DS-HIGH-IMPACT-OPS`).
@@ -247,6 +253,14 @@ attestation is a review at bar altitude, and a handoff past merge          (DS-A
     opportunity: CI artifacts only (DEC-033's scope); the full diff
     threat:      tests unreadable without the source, or tests generated from the bars — the scope
                  is rethought, not quietly widened
+  → DEC-ATTEST-OWNING-SECTION (dev)   of the views, the attester reads only the owning
+                                      hat's posture or measures section
+    strength:    ADR rationale stays out; the attester knows the standard a posture deviates
+                 from; one section of context
+    weakness:    the read is heading-to-heading, which the instruction has to state precisely
+    opportunity: no view at all; the whole view
+    threat:      a posture or measures section that starts carrying rationale readmits what
+                 DEC-040 excludes; attesters needing another section means the shapes are wrong
   → DEC-041 (dev)   posture is the judgement; evidence and exposure are conditional on it
     strength:    one precise loop per verdict, and an unmet bar still reports
     weakness:    three branches where two unconditional checks would do
