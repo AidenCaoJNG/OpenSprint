@@ -49,7 +49,7 @@ The step function has two paths, and both stay open:
 
 ## On Entry: Load the Surrogate
 
-Load the views, not every record (\`DS-SURROGATE-BUDGET\`):
+Load the views, not every record:
 
 \`\`\`bash
 opensprint compact plan --hat product --hat maintainer --json

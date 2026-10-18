@@ -59,7 +59,7 @@ either way, and this step writes rather than thinks.
 
 ### 1. Analyze the Conversation
 
-First, orient on what is already recorded — the views, not every record (\`DS-SURROGATE-BUDGET\`):
+First, orient on what is already recorded — the views, not every record:
 
 \`\`\`bash
 opensprint compact plan --json

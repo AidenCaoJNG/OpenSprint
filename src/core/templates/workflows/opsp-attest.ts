@@ -70,7 +70,7 @@ per-measure posture is a deviation from it. For a product bar, \`## Measures\` i
 \`opensprint/squad/product.md\` places it among the other goals. Find the section's heading and read
 only to the next \`## \` — nothing else of the view: a strategy block renders strength and weakness
 compiled from an ADR's
-Consideration Factors, which is the rationale this table keeps out (\`DEC-040\`). The bar itself
+Consideration Factors, which is the rationale this table keeps out. The bar itself
 you still read in full, from the driver-spec — it is the decision you are acting on.
 
 **Why tests and not source.** A test is the implementation's own restatement of a bar — \`DEC-038\`

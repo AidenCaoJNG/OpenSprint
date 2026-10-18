@@ -41,7 +41,7 @@ const OPSP_APPLY_INSTRUCTIONS = `Execute an initiative by orchestrating opsx cyc
    - Get the milestone list and their completion status
    - Identify the next incomplete milestone
 
-2. **Load the operator surrogate — the views, not every record** (\`DS-SURROGATE-BUDGET\`). Do it
+2. **Load the operator surrogate — the views, not every record.** Do it
    from the initiative's worktree: its branch holds records the trunk does not have yet, so where
    step 3 has not made the worktree, make it first. Then:
 

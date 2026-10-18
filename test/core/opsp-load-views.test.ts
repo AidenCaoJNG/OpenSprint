@@ -104,8 +104,8 @@ describe('workflows load the per-hat views, not every record', () => {
         step = stepOf(name);
       });
 
-      it('cites the budget it serves', () => {
-        expect(step).toContain('DS-SURROGATE-BUDGET');
+      it('says it loads the views, not every record', () => {
+        expect(step).toContain('the views, not every record');
       });
 
       it('names the views it reads', () => {
@@ -311,7 +311,6 @@ describe('workflows load the per-hat views, not every record', () => {
     it('refuses the strategy blocks, which carry ADR rationale', () => {
       expect(table()).toMatch(/the strategy blocks of any/);
       expect(table()).toMatch(/Consideration Factors/);
-      expect(table()).toContain('DEC-040');
     });
 
     it('says how to read one section of a view and nothing else', () => {

@@ -57,7 +57,7 @@ The initiative lives on its own branch (\`DEC-029\`). Switch to its worktree, or
 item was written before that rule. Verify with \`pwd\` and \`git branch --show-current\`.
 
 Load the surrogate before judging anything. A backlog item that looked novel in isolation is
-frequently answered already. Load the views, not every record (\`DS-SURROGATE-BUDGET\`):
+frequently answered already. Load the views, not every record:
 
 \`\`\`bash
 opensprint compact plan --hat product --hat maintainer --json
