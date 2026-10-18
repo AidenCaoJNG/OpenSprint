@@ -71,6 +71,16 @@ only the checkout's.
 
 None — the work was built before this initiative was recorded, in commit `e9f43f9`; `/opsp:apply` was skipped.
 
+## Operator Notes — beyond a compiled board
+
+Recorded at archive by Ivan Lee; nothing here is decided. Even with `--all-branches`, the board is an
+instantaneous state compiled from whatever this machine knows, and the tool is gaining tracker
+capability while the backlog stays scattered across worktrees, branches and remote pull requests.
+Moving it to `main` or a dedicated branch would depend on each adopter's discipline, which
+OpenSprint cannot enforce. The direction is a central store read and written only through
+`opensprint`, a static record for completed initiatives, and a skill that renders the live board in a
+browser. Backlogged as `kanban`, with an early proof of concept on branch `opsp/kanban`.
+
 ## Notes
 
 `DS-BOARD-VISIBILITY` and its bar were written at this backfill, not ex ante: the constraint was

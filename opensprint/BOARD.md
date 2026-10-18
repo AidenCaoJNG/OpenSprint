@@ -13,7 +13,9 @@ this file.
 
 Ideas captured, not yet triaged.
 
-_Empty._
+| Initiative | State | Owner | Milestones | Next |
+|---|---|---|---|---|
+| [kanban](initiatives/20261018-kanban.md) | exploring | — | — | — |
 
 ## Next
 
