@@ -49,7 +49,7 @@ phase nobody reasons about.
 
 ## Step 1: Find the item, its worktree, and pick it up
 
-Every backlog item lives on its own branch (\`DEC-029\`), so the board in this checkout cannot see
+Every backlog item lives on its own branch, so the board in this checkout cannot see
 items filed elsewhere. List every branch's cards — fetch first, so items others pushed are there:
 
 \`\`\`bash

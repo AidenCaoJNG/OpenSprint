@@ -152,7 +152,7 @@ const OPSP_APPLY_INSTRUCTIONS = `Execute an initiative by orchestrating opsx cyc
    commit them on the initiative branch, and offer to push it
    (\`git push -u origin opsp/<initiative-name>\`): until it is pushed, nobody else's board shows
    the card as taken. \`proposed\` → \`building\` is a handoff, so
-   \`advance\` refuses it without \`--hat\` (\`DEC-HAT-HANDOFFS\`); name \`devops\` instead where the
+   \`advance\` refuses it without \`--hat\`; name \`devops\` instead where the
    work is infrastructure.
 
    Skip this where it already declares \`building\` — the command says so and changes nothing.
