@@ -9,20 +9,21 @@
       },
       "observed": {},
       "inputHash": "f9cb821c9ab74faa7541a0f1b990f42131348ce91ba2a66733d3b3e1ed3db828",
-      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
+      "outputHash": "b8b4c0171b38100316f6bcfd4bc6312c7b18e5ffc778ade363e91271f101fd10"
     },
     {
       "hat": "product",
       "section": "goals",
       "inputs": {
         "DS-ATTESTED-TRUTH": "50ab0ebdf7f24e3c4fc7e7f262f55c4bd3704a26da3c4142fc3069b171bbddf4",
+        "DS-BOARD-VISIBILITY": "6ad67de307bbbaab62790dd05c22317766697dd081b0043920549ee8bf54206e",
         "DS-DOCUMENTATION-AS-OUTPUT": "3a14f1416125fba8b0a505898d27789926d2d723aa644112ff47efc32d684a93",
         "DS-FULL-COVERAGE": "c26cfb2019c3de8c82200a69383f7947ccaff00b90120f75227d60ae2aa59335",
         "DS-SURROGATE-BUDGET": "1f4a58a23fd6234c41bf7b70de166eb390f19e44b27411269713041eb1209446"
       },
       "observed": {},
-      "inputHash": "c3ecb3237955f2bf40aa17f0bd23a66190fd966c3560acb8cf1cd5b58d6600e0",
-      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
+      "inputHash": "78c6928f0c6682ea54fac08acc1e71e0a436679718896ffd853ec8e52d82c9fc",
+      "outputHash": "b8b4c0171b38100316f6bcfd4bc6312c7b18e5ffc778ade363e91271f101fd10"
     },
     {
       "hat": "product",
@@ -34,7 +35,7 @@
         "DS-DOCUMENTATION-REVIEWED": "b46ed7af85dc7e83c505ae49b3a2403720e2a4090913de72f0df857f7c0bd8b5",
         "DS-ESCALATION-HANDOFF": "be0f53b874c7179130886793208434731b2b413f6571a0e915dc75586afb0d98",
         "DS-FORWARD-CLOSURE": "1bae79376b2199bd81be53c38374d923f9a17074a741286f4f6adf49bba8137e",
-        "DS-HATS-AS-CONTEXT": "0ddddeef84168e7739c1f5da0ae3e04c611b19e08a953eca6fd4cf0de72f04c5",
+        "DS-HATS-AS-CONTEXT": "31aeb5318d3789305e4eefd8bb7ba28923f4175e306b9d25fbdf31e1f274b27c",
         "DS-LOOP-CLOSURE": "bf0aa9654a8008011a8acc477379ad01bdeea0bda16f947fd0d791e7f2754ba7",
         "DS-MAINTAINER-INHERITED": "be79b74de81ba998f0bd1d136da4433298b7fcb493d847e128b66efab1bada5d",
         "DS-MEASURE-ANATOMY": "d507fee1181a2c9dbe57be6833bf782d44c9c5bc992f606332c10ca2d06a9a7c",
@@ -43,19 +44,20 @@
         "DS-SME-OWNERSHIP": "13151f5ddbcc670347888d12755ff52fee4ebb4c25b46e5cd0f1625f5d983fe5",
         "DS-SQUAD-HATS": "bd96dab38e2e530f10cb379f2285a2099799685e074ab1a06345267c7ce5d478",
         "DS-STRATEGY-ALTITUDE": "387a4d7c4869dfa3a8742741a9f3c9e0584a99c5ac6424d5c7200241a360c044",
-        "DS-SURROGATE-GIT-CONTRACT": "3c007eee08a6257b73854dd53b992b54381c45625ec8d0f22774ee1f5dacb3f9",
+        "DS-SURROGATE-GIT-CONTRACT": "a585bd386a312b3d756de1475476ca1634c583c5a5207e91c5f08520da0c19e6",
         "DS-SURROGATE-SCOPE": "6d762f2b190b0ff37775c55963ea9bb398c66d345fabb8de1762baa21be4bce4",
         "DS-VIEW-AUTHORSHIP": "cdd098a8e65ed14efb6013814067cfc0a41c81490154aaf52046985fc3796bef"
       },
       "observed": {},
-      "inputHash": "a259bcc82dbf3732d28c344c5b0cbe06252aa0faa8986fa2933a815f74d07ba8",
-      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
+      "inputHash": "ebc846fe798d360197030fe3f142d4cdbee489783fb1e2eac437110d95aa736b",
+      "outputHash": "b8b4c0171b38100316f6bcfd4bc6312c7b18e5ffc778ade363e91271f101fd10"
     },
     {
       "hat": "product",
       "section": "measures",
       "inputs": {
         "DS-ATTESTED-TRUTH": "50ab0ebdf7f24e3c4fc7e7f262f55c4bd3704a26da3c4142fc3069b171bbddf4",
+        "DS-BOARD-VISIBILITY": "6ad67de307bbbaab62790dd05c22317766697dd081b0043920549ee8bf54206e",
         "DS-DOCUMENTATION-AS-OUTPUT": "3a14f1416125fba8b0a505898d27789926d2d723aa644112ff47efc32d684a93",
         "DS-FULL-COVERAGE": "c26cfb2019c3de8c82200a69383f7947ccaff00b90120f75227d60ae2aa59335",
         "DS-SURROGATE-BUDGET": "1f4a58a23fd6234c41bf7b70de166eb390f19e44b27411269713041eb1209446"
@@ -169,8 +171,8 @@
         "test/utils/marker-updates.test.ts": "396976228e13c62b5d96e20218f1c5e1da760d16e6e96365d70a2414770a426b",
         "test/utils/shell-detection.test.ts": "e02594aade050afbdf5d2063b0a11b87fae070760ec139d5f5a496bf40bfd092"
       },
-      "inputHash": "a9129e69b5a1acac120288043ba1fafbaca06b579582997d34c25e2b8e68e213",
-      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
+      "inputHash": "e001ca0f53acf7ab7705dd1d1c728baba330ac9eca1d7fe57a050162e9ce071e",
+      "outputHash": "b8b4c0171b38100316f6bcfd4bc6312c7b18e5ffc778ade363e91271f101fd10"
     },
     {
       "hat": "product",
@@ -286,7 +288,7 @@
         "test/utils/shell-detection.test.ts": "e02594aade050afbdf5d2063b0a11b87fae070760ec139d5f5a496bf40bfd092"
       },
       "inputHash": "00a84ffaf1fd8f1b9ab6c471ce0346bc27728d444ce2ea1836b786ae5882306d",
-      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
+      "outputHash": "b8b4c0171b38100316f6bcfd4bc6312c7b18e5ffc778ade363e91271f101fd10"
     },
     {
       "hat": "dev",
@@ -335,12 +337,14 @@
         "DEC-ATTEST-CHANGE-FRAME": "f4ad8c5c91b493a0cbbc9a4ea0f80789642b509b454316b4c272777229ae5954",
         "DEC-ATTEST-OWNING-SECTION": "3fd1feb2cfdd1dd206968f2cf4f70989ec62db04cc32b6b478b6275955a56e1a",
         "DEC-BAR-AT-PROPOSE": "f4a314e79e7ad70edbca023f2da5a02335b15c93269bbc95c57ced5c1423cf50",
+        "DEC-BOARD-ALL-BRANCHES": "cce798e3cc00080b95fe11033c0402f6f712c9b75cee1b7197de8caa0f9ccf48",
         "DEC-CLASSIFY-IN-QUESTION": "cab27acc1733dbde50d68ed1b7885238a4d1fd68641cd3f19003e69bd11424ad",
         "DEC-COMPILE-ON-APPROVAL": "e98a2efd0f849f5930177cfe2b742555d754237be488569aa1df47f90049205b",
         "DEC-COMPILE-ON-MILESTONE": "f31f82587550a80a008c555c563f0dc0cefe1fd9e3118a81e827ba24eaa40603",
         "DEC-ESCALATION-IS-A-STAGE": "86cfa763bde45dd6c2e3d9bb636338601a8e3881e4e068a17186aa5455b7a7da",
         "DEC-ESCALATION-LADDER": "42d0f993372665f509b8d1eb5aa02190cd5358ea1c9bfe589efbd961940ff051",
         "DEC-HAT-HANDOFFS": "3127bdd655d9ec900ea5dcc2db0018a29db8bc7f8efc140bf5ab4f62c65810ab",
+        "DEC-INITIATIVE-OWNER": "180b6a386a71219750a5ba1b976cb6632b4f20189f720972c89201989df0bf05",
         "DEC-KNOCKDOWN-ALL-VIEWS": "ae6c704484182f8cab756221ae5c858a6af903cba54d3cef5235b9e53b7c662d",
         "DEC-MIGRATE-SEPARATE-TOOL": "2a51607574aca62165152917bd874b489216ab28be42e7c87b30d2be277ffd16",
         "DEC-NO-DEFAULT-ARCHITECTURE-LOAD": "762bef3f0fc0b4d87ff1f6fe7d1af80621a5ab65b227dde7dcf5843ce38ae645",
@@ -355,8 +359,8 @@
         "pnpm-lock.yaml": "45b56ccda98c7359a62262e1359c7bad01c3712886e09ec4411f3574d108c00d",
         "tsconfig.json": "6293ae6dcdd69d5e58c61528c3ca38763d87f26e20471b03b2e2a474ad2fbc76"
       },
-      "inputHash": "0c62f66aece17fc775451a1cdabe8bf72feeb0b07bbb0cc0dff33d232cc18dbc",
-      "outputHash": "95b874fa29ed9832bac0daa312bf3350018c8c041a178d6a4658f335d0b962b0"
+      "inputHash": "5d1890f6ec88dfc45cd066362431efbd6e8ab0c1a6bcc6b6bbac47f7a4c747bf",
+      "outputHash": "4bcdb41b4246f0142111237874bf24288ac3e0e663f530bd2883c1880ece5a9d"
     },
     {
       "hat": "dev",
@@ -405,12 +409,14 @@
         "DEC-ATTEST-CHANGE-FRAME": "f4ad8c5c91b493a0cbbc9a4ea0f80789642b509b454316b4c272777229ae5954",
         "DEC-ATTEST-OWNING-SECTION": "3fd1feb2cfdd1dd206968f2cf4f70989ec62db04cc32b6b478b6275955a56e1a",
         "DEC-BAR-AT-PROPOSE": "f4a314e79e7ad70edbca023f2da5a02335b15c93269bbc95c57ced5c1423cf50",
+        "DEC-BOARD-ALL-BRANCHES": "cce798e3cc00080b95fe11033c0402f6f712c9b75cee1b7197de8caa0f9ccf48",
         "DEC-CLASSIFY-IN-QUESTION": "cab27acc1733dbde50d68ed1b7885238a4d1fd68641cd3f19003e69bd11424ad",
         "DEC-COMPILE-ON-APPROVAL": "e98a2efd0f849f5930177cfe2b742555d754237be488569aa1df47f90049205b",
         "DEC-COMPILE-ON-MILESTONE": "f31f82587550a80a008c555c563f0dc0cefe1fd9e3118a81e827ba24eaa40603",
         "DEC-ESCALATION-IS-A-STAGE": "86cfa763bde45dd6c2e3d9bb636338601a8e3881e4e068a17186aa5455b7a7da",
         "DEC-ESCALATION-LADDER": "42d0f993372665f509b8d1eb5aa02190cd5358ea1c9bfe589efbd961940ff051",
         "DEC-HAT-HANDOFFS": "3127bdd655d9ec900ea5dcc2db0018a29db8bc7f8efc140bf5ab4f62c65810ab",
+        "DEC-INITIATIVE-OWNER": "180b6a386a71219750a5ba1b976cb6632b4f20189f720972c89201989df0bf05",
         "DEC-KNOCKDOWN-ALL-VIEWS": "ae6c704484182f8cab756221ae5c858a6af903cba54d3cef5235b9e53b7c662d",
         "DEC-MIGRATE-SEPARATE-TOOL": "2a51607574aca62165152917bd874b489216ab28be42e7c87b30d2be277ffd16",
         "DEC-NO-DEFAULT-ARCHITECTURE-LOAD": "762bef3f0fc0b4d87ff1f6fe7d1af80621a5ab65b227dde7dcf5843ce38ae645",
@@ -420,8 +426,8 @@
         "DEC-VIEWS-FIRST-LOAD": "c677c0193c33f8bf74f3c2d1bac0a3bdc1adff1a7b16b0fa905979f45bae166f"
       },
       "observed": {},
-      "inputHash": "72b0425646a14059abb6698991c81f13d72313f34eee2e7444f46ffa1f9ed74c",
-      "outputHash": "95b874fa29ed9832bac0daa312bf3350018c8c041a178d6a4658f335d0b962b0"
+      "inputHash": "211425cd2c7799e11f989d1106114c1cf7255ef03bfefecc5773a1546eefb25c",
+      "outputHash": "4bcdb41b4246f0142111237874bf24288ac3e0e663f530bd2883c1880ece5a9d"
     },
     {
       "hat": "dev",
@@ -470,12 +476,14 @@
         "DEC-ATTEST-CHANGE-FRAME": "f4ad8c5c91b493a0cbbc9a4ea0f80789642b509b454316b4c272777229ae5954",
         "DEC-ATTEST-OWNING-SECTION": "3fd1feb2cfdd1dd206968f2cf4f70989ec62db04cc32b6b478b6275955a56e1a",
         "DEC-BAR-AT-PROPOSE": "f4a314e79e7ad70edbca023f2da5a02335b15c93269bbc95c57ced5c1423cf50",
+        "DEC-BOARD-ALL-BRANCHES": "cce798e3cc00080b95fe11033c0402f6f712c9b75cee1b7197de8caa0f9ccf48",
         "DEC-CLASSIFY-IN-QUESTION": "cab27acc1733dbde50d68ed1b7885238a4d1fd68641cd3f19003e69bd11424ad",
         "DEC-COMPILE-ON-APPROVAL": "e98a2efd0f849f5930177cfe2b742555d754237be488569aa1df47f90049205b",
         "DEC-COMPILE-ON-MILESTONE": "f31f82587550a80a008c555c563f0dc0cefe1fd9e3118a81e827ba24eaa40603",
         "DEC-ESCALATION-IS-A-STAGE": "86cfa763bde45dd6c2e3d9bb636338601a8e3881e4e068a17186aa5455b7a7da",
         "DEC-ESCALATION-LADDER": "42d0f993372665f509b8d1eb5aa02190cd5358ea1c9bfe589efbd961940ff051",
         "DEC-HAT-HANDOFFS": "3127bdd655d9ec900ea5dcc2db0018a29db8bc7f8efc140bf5ab4f62c65810ab",
+        "DEC-INITIATIVE-OWNER": "180b6a386a71219750a5ba1b976cb6632b4f20189f720972c89201989df0bf05",
         "DEC-KNOCKDOWN-ALL-VIEWS": "ae6c704484182f8cab756221ae5c858a6af903cba54d3cef5235b9e53b7c662d",
         "DEC-MIGRATE-SEPARATE-TOOL": "2a51607574aca62165152917bd874b489216ab28be42e7c87b30d2be277ffd16",
         "DEC-NO-DEFAULT-ARCHITECTURE-LOAD": "762bef3f0fc0b4d87ff1f6fe7d1af80621a5ab65b227dde7dcf5843ce38ae645",
@@ -489,8 +497,8 @@
         "src/core/schemas/change.schema.ts": "88726513993f66a29594b996a31340e3741c41cae0ff31d7f2da40348efc4106",
         "src/core/schemas/spec.schema.ts": "183e3f0b819fb5c866cde38dce59bc3a100889f3dc0fd86bc0401a8e0c07c5f1"
       },
-      "inputHash": "71b7977356e5011948124196ee74097afe18607c959b3607738fd469911a6ce4",
-      "outputHash": "95b874fa29ed9832bac0daa312bf3350018c8c041a178d6a4658f335d0b962b0"
+      "inputHash": "857762dce6f17a2ab09c6fdbf169065e56c3ad38310b2ffe1214dec5a9f007b1",
+      "outputHash": "4bcdb41b4246f0142111237874bf24288ac3e0e663f530bd2883c1880ece5a9d"
     },
     {
       "hat": "dev",
@@ -606,7 +614,7 @@
         "test/utils/shell-detection.test.ts": "e02594aade050afbdf5d2063b0a11b87fae070760ec139d5f5a496bf40bfd092"
       },
       "inputHash": "00a84ffaf1fd8f1b9ab6c471ce0346bc27728d444ce2ea1836b786ae5882306d",
-      "outputHash": "95b874fa29ed9832bac0daa312bf3350018c8c041a178d6a4658f335d0b962b0"
+      "outputHash": "4bcdb41b4246f0142111237874bf24288ac3e0e663f530bd2883c1880ece5a9d"
     },
     {
       "hat": "devops",
@@ -761,7 +769,7 @@
       },
       "observed": {},
       "inputHash": "a602fa7e930ac7b8b5aa33755141c87c0c1989c3bed65c44ca38f424c45bc295",
-      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
+      "outputHash": "55dbf76cdfb3f21b200e9d586e892b088157680b179239bc610c80c203139a91"
     },
     {
       "hat": "maintainer",
@@ -769,7 +777,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
+      "outputHash": "55dbf76cdfb3f21b200e9d586e892b088157680b179239bc610c80c203139a91"
     },
     {
       "hat": "maintainer",
@@ -777,7 +785,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
+      "outputHash": "55dbf76cdfb3f21b200e9d586e892b088157680b179239bc610c80c203139a91"
     },
     {
       "hat": "maintainer",
@@ -785,7 +793,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
+      "outputHash": "55dbf76cdfb3f21b200e9d586e892b088157680b179239bc610c80c203139a91"
     },
     {
       "hat": "maintainer",
@@ -796,7 +804,7 @@
       },
       "observed": {},
       "inputHash": "a0c490d7d5e574f07af6a619dbbb7d3c06589bddca29fe783a2aded1e0788102",
-      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
+      "outputHash": "55dbf76cdfb3f21b200e9d586e892b088157680b179239bc610c80c203139a91"
     },
     {
       "hat": "maintainer",
@@ -809,12 +817,12 @@
         "DS-ESCALATION-HANDOFF": "be0f53b874c7179130886793208434731b2b413f6571a0e915dc75586afb0d98",
         "DS-MEASURE-ANATOMY": "d507fee1181a2c9dbe57be6833bf782d44c9c5bc992f606332c10ca2d06a9a7c",
         "DS-STRATEGY-ALTITUDE": "387a4d7c4869dfa3a8742741a9f3c9e0584a99c5ac6424d5c7200241a360c044",
-        "DS-SURROGATE-GIT-CONTRACT": "3c007eee08a6257b73854dd53b992b54381c45625ec8d0f22774ee1f5dacb3f9",
+        "DS-SURROGATE-GIT-CONTRACT": "a585bd386a312b3d756de1475476ca1634c583c5a5207e91c5f08520da0c19e6",
         "DS-VIEW-AUTHORSHIP": "cdd098a8e65ed14efb6013814067cfc0a41c81490154aaf52046985fc3796bef"
       },
       "observed": {},
-      "inputHash": "d20a2e3a08fa9a9d479634670f2e7232480497e2177561bcab3aa0eb247f1228",
-      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
+      "inputHash": "ce50376decd7aaa1ed8bcee6242e2035159880746186a5ddb6c8bd3f03d0c0d5",
+      "outputHash": "55dbf76cdfb3f21b200e9d586e892b088157680b179239bc610c80c203139a91"
     },
     {
       "hat": "maintainer",
@@ -822,7 +830,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
+      "outputHash": "55dbf76cdfb3f21b200e9d586e892b088157680b179239bc610c80c203139a91"
     },
     {
       "hat": "maintainer",
@@ -830,7 +838,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
+      "outputHash": "55dbf76cdfb3f21b200e9d586e892b088157680b179239bc610c80c203139a91"
     },
     {
       "hat": "maintainer",
@@ -946,7 +954,7 @@
         "test/utils/shell-detection.test.ts": "e02594aade050afbdf5d2063b0a11b87fae070760ec139d5f5a496bf40bfd092"
       },
       "inputHash": "00a84ffaf1fd8f1b9ab6c471ce0346bc27728d444ce2ea1836b786ae5882306d",
-      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
+      "outputHash": "55dbf76cdfb3f21b200e9d586e892b088157680b179239bc610c80c203139a91"
     }
   ]
 }

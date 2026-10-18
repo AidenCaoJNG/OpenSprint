@@ -44,6 +44,7 @@ Closed.
 | [lifecycle-beyond-build](initiatives/20261001-lifecycle-beyond-build.md) | completed | — | 11/11 _(+1 superseded)_ | — |
 | [sdlc-operating-contract](initiatives/20261009-sdlc-operating-contract.md) | completed | — | 12/12 | — |
 | [surrogate-currency](initiatives/20261010-surrogate-currency.md) | completed | — | 5/5 | — |
+| [board-owners](initiatives/20261018-board-owners.md) | completed | Ivan Lee | 1/1 | — |
 | [load-hat-views](initiatives/20261018-load-hat-views.md) | completed | — | 1/1 | — |
 
 ## Declined

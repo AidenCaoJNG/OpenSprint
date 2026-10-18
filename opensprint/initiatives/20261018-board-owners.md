@@ -1,9 +1,10 @@
 ---
 id: board-owners
-status: active
-state: attested
+status: completed
+state: completed
 owner: Ivan Lee
 created: 2026-10-18
+completed: 2026-10-18
 ---
 
 ## Description
@@ -65,6 +66,10 @@ The change documents itself: `docs/concepts.md` explains owners and `owner-undec
 commands. **Finding, left as is by the operator:** the tree listings in `docs/concepts.md` and
 `docs/installation.md` still describe `BOARD.md` as every initiative by state, where it now holds
 only the checkout's.
+
+## OPSX Changes
+
+None — the work was built before this initiative was recorded, in commit `e9f43f9`; `/opsp:apply` was skipped.
 
 ## Notes
 
