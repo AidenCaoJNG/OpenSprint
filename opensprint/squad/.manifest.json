@@ -9,7 +9,7 @@
       },
       "observed": {},
       "inputHash": "f9cb821c9ab74faa7541a0f1b990f42131348ce91ba2a66733d3b3e1ed3db828",
-      "outputHash": "366809aed1565b9627272673318099d33a1ee65e0a461cf3258428a2cb0d34cb"
+      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
     },
     {
       "hat": "product",
@@ -18,11 +18,11 @@
         "DS-ATTESTED-TRUTH": "50ab0ebdf7f24e3c4fc7e7f262f55c4bd3704a26da3c4142fc3069b171bbddf4",
         "DS-DOCUMENTATION-AS-OUTPUT": "3a14f1416125fba8b0a505898d27789926d2d723aa644112ff47efc32d684a93",
         "DS-FULL-COVERAGE": "c26cfb2019c3de8c82200a69383f7947ccaff00b90120f75227d60ae2aa59335",
-        "DS-SURROGATE-BUDGET": "5807c1ef6616018ddcd38085fa34a48addbeec61f1a6d914d44d18be1991e5c7"
+        "DS-SURROGATE-BUDGET": "1f4a58a23fd6234c41bf7b70de166eb390f19e44b27411269713041eb1209446"
       },
       "observed": {},
-      "inputHash": "ef048e1202df617c2c5fd765a898119d36677669207dfd5ff093e683395848f6",
-      "outputHash": "366809aed1565b9627272673318099d33a1ee65e0a461cf3258428a2cb0d34cb"
+      "inputHash": "c3ecb3237955f2bf40aa17f0bd23a66190fd966c3560acb8cf1cd5b58d6600e0",
+      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
     },
     {
       "hat": "product",
@@ -49,7 +49,7 @@
       },
       "observed": {},
       "inputHash": "a259bcc82dbf3732d28c344c5b0cbe06252aa0faa8986fa2933a815f74d07ba8",
-      "outputHash": "366809aed1565b9627272673318099d33a1ee65e0a461cf3258428a2cb0d34cb"
+      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
     },
     {
       "hat": "product",
@@ -58,7 +58,7 @@
         "DS-ATTESTED-TRUTH": "50ab0ebdf7f24e3c4fc7e7f262f55c4bd3704a26da3c4142fc3069b171bbddf4",
         "DS-DOCUMENTATION-AS-OUTPUT": "3a14f1416125fba8b0a505898d27789926d2d723aa644112ff47efc32d684a93",
         "DS-FULL-COVERAGE": "c26cfb2019c3de8c82200a69383f7947ccaff00b90120f75227d60ae2aa59335",
-        "DS-SURROGATE-BUDGET": "5807c1ef6616018ddcd38085fa34a48addbeec61f1a6d914d44d18be1991e5c7"
+        "DS-SURROGATE-BUDGET": "1f4a58a23fd6234c41bf7b70de166eb390f19e44b27411269713041eb1209446"
       },
       "observed": {
         "test/cli-e2e/advance.test.ts": "8d530a8bcf943091566c1dbe2439b8a8a83f4fc36a72d3a2d916ad942ed65087",
@@ -141,7 +141,7 @@
         "test/core/opsp-board-owners.test.ts": "a3d6a25993ab8d847c5f0babe790f4d84d8514a37352e732f8228e1b811bdb8d",
         "test/core/opsp-compact-skill.test.ts": "b07ecc96f144b91f839237cae125b96baa25d6cb525fcdce3386a33dfa710f2f",
         "test/core/opsp-knockdown-views.test.ts": "a4d5ce98c0cd8fedbf6f555278e1faf590aee6afdb7430491c0b509496213b98",
-        "test/core/opsp-load-views.test.ts": "1edc5a7987ba71892ca738ce181dfdab73dbb084f5a404887b00be2ff68e0704",
+        "test/core/opsp-load-views.test.ts": "977cae9648a0c8b9208a6a4df131093a41168558476a41d7ac81e07c1fae51ed",
         "test/core/opsp-rebase-abandon.test.ts": "941d2612aba0fb2f79d3ea421340148e5c011bc63ebd36cb40b27cb8e3931046",
         "test/core/opsp-skill-generation.test.ts": "4eee339836fcc05ccf499b0502c3033f6e9f8f075d768cfbd52db0fb4f9ea301",
         "test/core/parsers/change-parser.test.ts": "a5b556328d5fcce210d8cc86d21f5c5e3e33c2c7812f260817b01de53932e54e",
@@ -169,8 +169,8 @@
         "test/utils/marker-updates.test.ts": "396976228e13c62b5d96e20218f1c5e1da760d16e6e96365d70a2414770a426b",
         "test/utils/shell-detection.test.ts": "e02594aade050afbdf5d2063b0a11b87fae070760ec139d5f5a496bf40bfd092"
       },
-      "inputHash": "7f7075e9d727dc9383bec88b73b02a8fa57f396de8afa8c4bd7b499b4e390900",
-      "outputHash": "366809aed1565b9627272673318099d33a1ee65e0a461cf3258428a2cb0d34cb"
+      "inputHash": "a9129e69b5a1acac120288043ba1fafbaca06b579582997d34c25e2b8e68e213",
+      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
     },
     {
       "hat": "product",
@@ -257,7 +257,7 @@
         "test/core/opsp-board-owners.test.ts": "a3d6a25993ab8d847c5f0babe790f4d84d8514a37352e732f8228e1b811bdb8d",
         "test/core/opsp-compact-skill.test.ts": "b07ecc96f144b91f839237cae125b96baa25d6cb525fcdce3386a33dfa710f2f",
         "test/core/opsp-knockdown-views.test.ts": "a4d5ce98c0cd8fedbf6f555278e1faf590aee6afdb7430491c0b509496213b98",
-        "test/core/opsp-load-views.test.ts": "1edc5a7987ba71892ca738ce181dfdab73dbb084f5a404887b00be2ff68e0704",
+        "test/core/opsp-load-views.test.ts": "977cae9648a0c8b9208a6a4df131093a41168558476a41d7ac81e07c1fae51ed",
         "test/core/opsp-rebase-abandon.test.ts": "941d2612aba0fb2f79d3ea421340148e5c011bc63ebd36cb40b27cb8e3931046",
         "test/core/opsp-skill-generation.test.ts": "4eee339836fcc05ccf499b0502c3033f6e9f8f075d768cfbd52db0fb4f9ea301",
         "test/core/parsers/change-parser.test.ts": "a5b556328d5fcce210d8cc86d21f5c5e3e33c2c7812f260817b01de53932e54e",
@@ -285,8 +285,8 @@
         "test/utils/marker-updates.test.ts": "396976228e13c62b5d96e20218f1c5e1da760d16e6e96365d70a2414770a426b",
         "test/utils/shell-detection.test.ts": "e02594aade050afbdf5d2063b0a11b87fae070760ec139d5f5a496bf40bfd092"
       },
-      "inputHash": "e2194113a76a0ac7f5c1c95c16d00dc67fdaf330fd63eaba4cb95fab74577ad5",
-      "outputHash": "366809aed1565b9627272673318099d33a1ee65e0a461cf3258428a2cb0d34cb"
+      "inputHash": "00a84ffaf1fd8f1b9ab6c471ce0346bc27728d444ce2ea1836b786ae5882306d",
+      "outputHash": "12183c25f25d6b415c12d294fba4e123ab2d0cea7a9db8df7647585c580614e1"
     },
     {
       "hat": "dev",
@@ -305,7 +305,6 @@
         "DEC-011": "06cc8b752d5d979c85b34bd5ed8bfa18e79a13870ad3b8af5c52977589b985ae",
         "DEC-013": "2711df355edd295f445c05abfe940f614ac105344ffe5584a3e3ac51ebf76f6a",
         "DEC-014": "9f5a2cc5ec56dbb85b482cd463bec7c050c21d3a795673270a7c79007db06e72",
-        "DEC-015": "37b130063433230319adc8688743acd2b75f407751d5356d8f491cf236d72c6a",
         "DEC-016": "0405d7721f5020a442ac4b1f920159bae3fab81c5e7030621814d983e9e7fb3d",
         "DEC-017": "fe0a91cee01ed48eba00d2d3985b87842d0b72a8b4f7500e1c6aae29cfbc9a2f",
         "DEC-018": "046ca30c7552d434767aac1e98fb70d0bac2b6998c91e6a2cb8415b053b92713",
@@ -334,6 +333,7 @@
         "DEC-043": "ebfcf107a1373c566b28add593953166b6d50fd55ecbf590d995798df3d259ca",
         "DEC-044": "ba0f98a3603b5917bc11cc8fd863b519d6e6ab2f9ed1dc47161c12f2f97bef74",
         "DEC-ATTEST-CHANGE-FRAME": "f4ad8c5c91b493a0cbbc9a4ea0f80789642b509b454316b4c272777229ae5954",
+        "DEC-ATTEST-OWNING-SECTION": "3fd1feb2cfdd1dd206968f2cf4f70989ec62db04cc32b6b478b6275955a56e1a",
         "DEC-BAR-AT-PROPOSE": "f4a314e79e7ad70edbca023f2da5a02335b15c93269bbc95c57ced5c1423cf50",
         "DEC-CLASSIFY-IN-QUESTION": "cab27acc1733dbde50d68ed1b7885238a4d1fd68641cd3f19003e69bd11424ad",
         "DEC-COMPILE-ON-APPROVAL": "e98a2efd0f849f5930177cfe2b742555d754237be488569aa1df47f90049205b",
@@ -343,9 +343,11 @@
         "DEC-HAT-HANDOFFS": "3127bdd655d9ec900ea5dcc2db0018a29db8bc7f8efc140bf5ab4f62c65810ab",
         "DEC-KNOCKDOWN-ALL-VIEWS": "ae6c704484182f8cab756221ae5c858a6af903cba54d3cef5235b9e53b7c662d",
         "DEC-MIGRATE-SEPARATE-TOOL": "2a51607574aca62165152917bd874b489216ab28be42e7c87b30d2be277ffd16",
+        "DEC-NO-DEFAULT-ARCHITECTURE-LOAD": "762bef3f0fc0b4d87ff1f6fe7d1af80621a5ab65b227dde7dcf5843ce38ae645",
         "DEC-REEXPLORE-NAME": "321aee06d5dc5e342b1b8981b7691868d1358e2f891e1f3fa7528a2843934ca8",
         "DEC-SCOPED-SEAL": "d6de4f4d15f9430743c326f86decb5affd280ee70cd15b85a235b94e559a5391",
-        "DEC-STATE-MACHINE": "860cbcd4107a1d6f59088e7ad1d126523a966d441aab97e4e8cd00c0b0060a97"
+        "DEC-STATE-MACHINE": "860cbcd4107a1d6f59088e7ad1d126523a966d441aab97e4e8cd00c0b0060a97",
+        "DEC-VIEWS-FIRST-LOAD": "c677c0193c33f8bf74f3c2d1bac0a3bdc1adff1a7b16b0fa905979f45bae166f"
       },
       "observed": {
         "package-lock.json": "d0e14cbf15efc7c1893999e89d0332905c539741d0a1578679527bdf6c5b6cb3",
@@ -353,8 +355,8 @@
         "pnpm-lock.yaml": "45b56ccda98c7359a62262e1359c7bad01c3712886e09ec4411f3574d108c00d",
         "tsconfig.json": "6293ae6dcdd69d5e58c61528c3ca38763d87f26e20471b03b2e2a474ad2fbc76"
       },
-      "inputHash": "b2a32c259beff19436fcdb0836c73e8dd50fffd1685a6acb1bbd2b017072c6f1",
-      "outputHash": "bd0e50649714a073356ac9d803f86571feeebb849eb04e9e7be9546eb9a5cf2c"
+      "inputHash": "0c62f66aece17fc775451a1cdabe8bf72feeb0b07bbb0cc0dff33d232cc18dbc",
+      "outputHash": "95b874fa29ed9832bac0daa312bf3350018c8c041a178d6a4658f335d0b962b0"
     },
     {
       "hat": "dev",
@@ -373,7 +375,6 @@
         "DEC-011": "06cc8b752d5d979c85b34bd5ed8bfa18e79a13870ad3b8af5c52977589b985ae",
         "DEC-013": "2711df355edd295f445c05abfe940f614ac105344ffe5584a3e3ac51ebf76f6a",
         "DEC-014": "9f5a2cc5ec56dbb85b482cd463bec7c050c21d3a795673270a7c79007db06e72",
-        "DEC-015": "37b130063433230319adc8688743acd2b75f407751d5356d8f491cf236d72c6a",
         "DEC-016": "0405d7721f5020a442ac4b1f920159bae3fab81c5e7030621814d983e9e7fb3d",
         "DEC-017": "fe0a91cee01ed48eba00d2d3985b87842d0b72a8b4f7500e1c6aae29cfbc9a2f",
         "DEC-018": "046ca30c7552d434767aac1e98fb70d0bac2b6998c91e6a2cb8415b053b92713",
@@ -402,6 +403,7 @@
         "DEC-043": "ebfcf107a1373c566b28add593953166b6d50fd55ecbf590d995798df3d259ca",
         "DEC-044": "ba0f98a3603b5917bc11cc8fd863b519d6e6ab2f9ed1dc47161c12f2f97bef74",
         "DEC-ATTEST-CHANGE-FRAME": "f4ad8c5c91b493a0cbbc9a4ea0f80789642b509b454316b4c272777229ae5954",
+        "DEC-ATTEST-OWNING-SECTION": "3fd1feb2cfdd1dd206968f2cf4f70989ec62db04cc32b6b478b6275955a56e1a",
         "DEC-BAR-AT-PROPOSE": "f4a314e79e7ad70edbca023f2da5a02335b15c93269bbc95c57ced5c1423cf50",
         "DEC-CLASSIFY-IN-QUESTION": "cab27acc1733dbde50d68ed1b7885238a4d1fd68641cd3f19003e69bd11424ad",
         "DEC-COMPILE-ON-APPROVAL": "e98a2efd0f849f5930177cfe2b742555d754237be488569aa1df47f90049205b",
@@ -411,13 +413,15 @@
         "DEC-HAT-HANDOFFS": "3127bdd655d9ec900ea5dcc2db0018a29db8bc7f8efc140bf5ab4f62c65810ab",
         "DEC-KNOCKDOWN-ALL-VIEWS": "ae6c704484182f8cab756221ae5c858a6af903cba54d3cef5235b9e53b7c662d",
         "DEC-MIGRATE-SEPARATE-TOOL": "2a51607574aca62165152917bd874b489216ab28be42e7c87b30d2be277ffd16",
+        "DEC-NO-DEFAULT-ARCHITECTURE-LOAD": "762bef3f0fc0b4d87ff1f6fe7d1af80621a5ab65b227dde7dcf5843ce38ae645",
         "DEC-REEXPLORE-NAME": "321aee06d5dc5e342b1b8981b7691868d1358e2f891e1f3fa7528a2843934ca8",
         "DEC-SCOPED-SEAL": "d6de4f4d15f9430743c326f86decb5affd280ee70cd15b85a235b94e559a5391",
-        "DEC-STATE-MACHINE": "860cbcd4107a1d6f59088e7ad1d126523a966d441aab97e4e8cd00c0b0060a97"
+        "DEC-STATE-MACHINE": "860cbcd4107a1d6f59088e7ad1d126523a966d441aab97e4e8cd00c0b0060a97",
+        "DEC-VIEWS-FIRST-LOAD": "c677c0193c33f8bf74f3c2d1bac0a3bdc1adff1a7b16b0fa905979f45bae166f"
       },
       "observed": {},
-      "inputHash": "5325999f592952e5b127e63f4b86cda96d2307494abf6cacb9f5749bfc646fca",
-      "outputHash": "bd0e50649714a073356ac9d803f86571feeebb849eb04e9e7be9546eb9a5cf2c"
+      "inputHash": "72b0425646a14059abb6698991c81f13d72313f34eee2e7444f46ffa1f9ed74c",
+      "outputHash": "95b874fa29ed9832bac0daa312bf3350018c8c041a178d6a4658f335d0b962b0"
     },
     {
       "hat": "dev",
@@ -436,7 +440,6 @@
         "DEC-011": "06cc8b752d5d979c85b34bd5ed8bfa18e79a13870ad3b8af5c52977589b985ae",
         "DEC-013": "2711df355edd295f445c05abfe940f614ac105344ffe5584a3e3ac51ebf76f6a",
         "DEC-014": "9f5a2cc5ec56dbb85b482cd463bec7c050c21d3a795673270a7c79007db06e72",
-        "DEC-015": "37b130063433230319adc8688743acd2b75f407751d5356d8f491cf236d72c6a",
         "DEC-016": "0405d7721f5020a442ac4b1f920159bae3fab81c5e7030621814d983e9e7fb3d",
         "DEC-017": "fe0a91cee01ed48eba00d2d3985b87842d0b72a8b4f7500e1c6aae29cfbc9a2f",
         "DEC-018": "046ca30c7552d434767aac1e98fb70d0bac2b6998c91e6a2cb8415b053b92713",
@@ -465,6 +468,7 @@
         "DEC-043": "ebfcf107a1373c566b28add593953166b6d50fd55ecbf590d995798df3d259ca",
         "DEC-044": "ba0f98a3603b5917bc11cc8fd863b519d6e6ab2f9ed1dc47161c12f2f97bef74",
         "DEC-ATTEST-CHANGE-FRAME": "f4ad8c5c91b493a0cbbc9a4ea0f80789642b509b454316b4c272777229ae5954",
+        "DEC-ATTEST-OWNING-SECTION": "3fd1feb2cfdd1dd206968f2cf4f70989ec62db04cc32b6b478b6275955a56e1a",
         "DEC-BAR-AT-PROPOSE": "f4a314e79e7ad70edbca023f2da5a02335b15c93269bbc95c57ced5c1423cf50",
         "DEC-CLASSIFY-IN-QUESTION": "cab27acc1733dbde50d68ed1b7885238a4d1fd68641cd3f19003e69bd11424ad",
         "DEC-COMPILE-ON-APPROVAL": "e98a2efd0f849f5930177cfe2b742555d754237be488569aa1df47f90049205b",
@@ -474,17 +478,19 @@
         "DEC-HAT-HANDOFFS": "3127bdd655d9ec900ea5dcc2db0018a29db8bc7f8efc140bf5ab4f62c65810ab",
         "DEC-KNOCKDOWN-ALL-VIEWS": "ae6c704484182f8cab756221ae5c858a6af903cba54d3cef5235b9e53b7c662d",
         "DEC-MIGRATE-SEPARATE-TOOL": "2a51607574aca62165152917bd874b489216ab28be42e7c87b30d2be277ffd16",
+        "DEC-NO-DEFAULT-ARCHITECTURE-LOAD": "762bef3f0fc0b4d87ff1f6fe7d1af80621a5ab65b227dde7dcf5843ce38ae645",
         "DEC-REEXPLORE-NAME": "321aee06d5dc5e342b1b8981b7691868d1358e2f891e1f3fa7528a2843934ca8",
         "DEC-SCOPED-SEAL": "d6de4f4d15f9430743c326f86decb5affd280ee70cd15b85a235b94e559a5391",
-        "DEC-STATE-MACHINE": "860cbcd4107a1d6f59088e7ad1d126523a966d441aab97e4e8cd00c0b0060a97"
+        "DEC-STATE-MACHINE": "860cbcd4107a1d6f59088e7ad1d126523a966d441aab97e4e8cd00c0b0060a97",
+        "DEC-VIEWS-FIRST-LOAD": "c677c0193c33f8bf74f3c2d1bac0a3bdc1adff1a7b16b0fa905979f45bae166f"
       },
       "observed": {
         "src/core/schemas/base.schema.ts": "507bb446da9c6251f6bd538463759977586121e2a3ae4aeff1ae0a60b9c171a3",
         "src/core/schemas/change.schema.ts": "88726513993f66a29594b996a31340e3741c41cae0ff31d7f2da40348efc4106",
         "src/core/schemas/spec.schema.ts": "183e3f0b819fb5c866cde38dce59bc3a100889f3dc0fd86bc0401a8e0c07c5f1"
       },
-      "inputHash": "180b3447342b070f91f4dc6dd70cdfec6ec6994d24cafd3f02345ab78f938607",
-      "outputHash": "bd0e50649714a073356ac9d803f86571feeebb849eb04e9e7be9546eb9a5cf2c"
+      "inputHash": "71b7977356e5011948124196ee74097afe18607c959b3607738fd469911a6ce4",
+      "outputHash": "95b874fa29ed9832bac0daa312bf3350018c8c041a178d6a4658f335d0b962b0"
     },
     {
       "hat": "dev",
@@ -571,7 +577,7 @@
         "test/core/opsp-board-owners.test.ts": "a3d6a25993ab8d847c5f0babe790f4d84d8514a37352e732f8228e1b811bdb8d",
         "test/core/opsp-compact-skill.test.ts": "b07ecc96f144b91f839237cae125b96baa25d6cb525fcdce3386a33dfa710f2f",
         "test/core/opsp-knockdown-views.test.ts": "a4d5ce98c0cd8fedbf6f555278e1faf590aee6afdb7430491c0b509496213b98",
-        "test/core/opsp-load-views.test.ts": "1edc5a7987ba71892ca738ce181dfdab73dbb084f5a404887b00be2ff68e0704",
+        "test/core/opsp-load-views.test.ts": "977cae9648a0c8b9208a6a4df131093a41168558476a41d7ac81e07c1fae51ed",
         "test/core/opsp-rebase-abandon.test.ts": "941d2612aba0fb2f79d3ea421340148e5c011bc63ebd36cb40b27cb8e3931046",
         "test/core/opsp-skill-generation.test.ts": "4eee339836fcc05ccf499b0502c3033f6e9f8f075d768cfbd52db0fb4f9ea301",
         "test/core/parsers/change-parser.test.ts": "a5b556328d5fcce210d8cc86d21f5c5e3e33c2c7812f260817b01de53932e54e",
@@ -599,8 +605,8 @@
         "test/utils/marker-updates.test.ts": "396976228e13c62b5d96e20218f1c5e1da760d16e6e96365d70a2414770a426b",
         "test/utils/shell-detection.test.ts": "e02594aade050afbdf5d2063b0a11b87fae070760ec139d5f5a496bf40bfd092"
       },
-      "inputHash": "e2194113a76a0ac7f5c1c95c16d00dc67fdaf330fd63eaba4cb95fab74577ad5",
-      "outputHash": "bd0e50649714a073356ac9d803f86571feeebb849eb04e9e7be9546eb9a5cf2c"
+      "inputHash": "00a84ffaf1fd8f1b9ab6c471ce0346bc27728d444ce2ea1836b786ae5882306d",
+      "outputHash": "95b874fa29ed9832bac0daa312bf3350018c8c041a178d6a4658f335d0b962b0"
     },
     {
       "hat": "devops",
@@ -613,7 +619,7 @@
       },
       "observed": {},
       "inputHash": "b7d8ac731f3faf2521cdd5d35fbf41f9f42b2fab6cc08ff1680ae2004537a22b",
-      "outputHash": "d584ae3555b5c30d0485d2f4368c960d40385a961737214f54c4da031b273273"
+      "outputHash": "c1c97ba18228a98f5d85910c21b4240df67329a5e351227724204c65c48a1b00"
     },
     {
       "hat": "devops",
@@ -629,7 +635,7 @@
         ".github/workflows/release-prepare.yml": "bc7d747b777da48bee2a5ad59e48e433e3a374b0f76960f575182cf76497152a"
       },
       "inputHash": "2fd187f7995c1d2f332dee8c6167da270a5b5a95815f57e1f1ef1dcec54705c4",
-      "outputHash": "d584ae3555b5c30d0485d2f4368c960d40385a961737214f54c4da031b273273"
+      "outputHash": "c1c97ba18228a98f5d85910c21b4240df67329a5e351227724204c65c48a1b00"
     },
     {
       "hat": "devops",
@@ -716,7 +722,7 @@
         "test/core/opsp-board-owners.test.ts": "a3d6a25993ab8d847c5f0babe790f4d84d8514a37352e732f8228e1b811bdb8d",
         "test/core/opsp-compact-skill.test.ts": "b07ecc96f144b91f839237cae125b96baa25d6cb525fcdce3386a33dfa710f2f",
         "test/core/opsp-knockdown-views.test.ts": "a4d5ce98c0cd8fedbf6f555278e1faf590aee6afdb7430491c0b509496213b98",
-        "test/core/opsp-load-views.test.ts": "1edc5a7987ba71892ca738ce181dfdab73dbb084f5a404887b00be2ff68e0704",
+        "test/core/opsp-load-views.test.ts": "977cae9648a0c8b9208a6a4df131093a41168558476a41d7ac81e07c1fae51ed",
         "test/core/opsp-rebase-abandon.test.ts": "941d2612aba0fb2f79d3ea421340148e5c011bc63ebd36cb40b27cb8e3931046",
         "test/core/opsp-skill-generation.test.ts": "4eee339836fcc05ccf499b0502c3033f6e9f8f075d768cfbd52db0fb4f9ea301",
         "test/core/parsers/change-parser.test.ts": "a5b556328d5fcce210d8cc86d21f5c5e3e33c2c7812f260817b01de53932e54e",
@@ -744,8 +750,8 @@
         "test/utils/marker-updates.test.ts": "396976228e13c62b5d96e20218f1c5e1da760d16e6e96365d70a2414770a426b",
         "test/utils/shell-detection.test.ts": "e02594aade050afbdf5d2063b0a11b87fae070760ec139d5f5a496bf40bfd092"
       },
-      "inputHash": "e2194113a76a0ac7f5c1c95c16d00dc67fdaf330fd63eaba4cb95fab74577ad5",
-      "outputHash": "d584ae3555b5c30d0485d2f4368c960d40385a961737214f54c4da031b273273"
+      "inputHash": "00a84ffaf1fd8f1b9ab6c471ce0346bc27728d444ce2ea1836b786ae5882306d",
+      "outputHash": "c1c97ba18228a98f5d85910c21b4240df67329a5e351227724204c65c48a1b00"
     },
     {
       "hat": "maintainer",
@@ -755,7 +761,7 @@
       },
       "observed": {},
       "inputHash": "a602fa7e930ac7b8b5aa33755141c87c0c1989c3bed65c44ca38f424c45bc295",
-      "outputHash": "623f4e5537a7245fbc5c1fd5f37871e80967109271f23aa81c036bef60d32239"
+      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
     },
     {
       "hat": "maintainer",
@@ -763,7 +769,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "623f4e5537a7245fbc5c1fd5f37871e80967109271f23aa81c036bef60d32239"
+      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
     },
     {
       "hat": "maintainer",
@@ -771,7 +777,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "623f4e5537a7245fbc5c1fd5f37871e80967109271f23aa81c036bef60d32239"
+      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
     },
     {
       "hat": "maintainer",
@@ -779,7 +785,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "623f4e5537a7245fbc5c1fd5f37871e80967109271f23aa81c036bef60d32239"
+      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
     },
     {
       "hat": "maintainer",
@@ -790,7 +796,7 @@
       },
       "observed": {},
       "inputHash": "a0c490d7d5e574f07af6a619dbbb7d3c06589bddca29fe783a2aded1e0788102",
-      "outputHash": "623f4e5537a7245fbc5c1fd5f37871e80967109271f23aa81c036bef60d32239"
+      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
     },
     {
       "hat": "maintainer",
@@ -808,7 +814,7 @@
       },
       "observed": {},
       "inputHash": "d20a2e3a08fa9a9d479634670f2e7232480497e2177561bcab3aa0eb247f1228",
-      "outputHash": "623f4e5537a7245fbc5c1fd5f37871e80967109271f23aa81c036bef60d32239"
+      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
     },
     {
       "hat": "maintainer",
@@ -816,7 +822,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "623f4e5537a7245fbc5c1fd5f37871e80967109271f23aa81c036bef60d32239"
+      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
     },
     {
       "hat": "maintainer",
@@ -824,7 +830,7 @@
       "inputs": {},
       "observed": {},
       "inputHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "outputHash": "623f4e5537a7245fbc5c1fd5f37871e80967109271f23aa81c036bef60d32239"
+      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
     },
     {
       "hat": "maintainer",
@@ -911,7 +917,7 @@
         "test/core/opsp-board-owners.test.ts": "a3d6a25993ab8d847c5f0babe790f4d84d8514a37352e732f8228e1b811bdb8d",
         "test/core/opsp-compact-skill.test.ts": "b07ecc96f144b91f839237cae125b96baa25d6cb525fcdce3386a33dfa710f2f",
         "test/core/opsp-knockdown-views.test.ts": "a4d5ce98c0cd8fedbf6f555278e1faf590aee6afdb7430491c0b509496213b98",
-        "test/core/opsp-load-views.test.ts": "1edc5a7987ba71892ca738ce181dfdab73dbb084f5a404887b00be2ff68e0704",
+        "test/core/opsp-load-views.test.ts": "977cae9648a0c8b9208a6a4df131093a41168558476a41d7ac81e07c1fae51ed",
         "test/core/opsp-rebase-abandon.test.ts": "941d2612aba0fb2f79d3ea421340148e5c011bc63ebd36cb40b27cb8e3931046",
         "test/core/opsp-skill-generation.test.ts": "4eee339836fcc05ccf499b0502c3033f6e9f8f075d768cfbd52db0fb4f9ea301",
         "test/core/parsers/change-parser.test.ts": "a5b556328d5fcce210d8cc86d21f5c5e3e33c2c7812f260817b01de53932e54e",
@@ -939,8 +945,8 @@
         "test/utils/marker-updates.test.ts": "396976228e13c62b5d96e20218f1c5e1da760d16e6e96365d70a2414770a426b",
         "test/utils/shell-detection.test.ts": "e02594aade050afbdf5d2063b0a11b87fae070760ec139d5f5a496bf40bfd092"
       },
-      "inputHash": "e2194113a76a0ac7f5c1c95c16d00dc67fdaf330fd63eaba4cb95fab74577ad5",
-      "outputHash": "623f4e5537a7245fbc5c1fd5f37871e80967109271f23aa81c036bef60d32239"
+      "inputHash": "00a84ffaf1fd8f1b9ab6c471ce0346bc27728d444ce2ea1836b786ae5882306d",
+      "outputHash": "e698478ba70b7eb47e6e96733c4ad442cea4dc92af4fd6e3f061877850d43829"
     }
   ]
 }
