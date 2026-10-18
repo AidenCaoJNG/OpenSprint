@@ -111,11 +111,14 @@ synthetic part. It needs a model and an agent wearing a hat, which is why no pip
 view (`DEC-COMPILE-ON-MILESTONE`). The commands on the deterministic side are registered in
 `src/cli/index.ts`; the skill content is in `src/core/templates/workflows/opsp-*.ts`.
 
-The planning and build skills orient on the per-hat views and open a full record only for the
-decision they act on (`DS-SURROGATE-BUDGET`). `compact plan --hat <hat> --json` tells them which
-sections to trust; where one is stale, unsealed or tampered they read its records instead, and they
-fall back to every record where none declares a hat (observed in `opsp-apply.ts`, `opsp-explore.ts`,
-`opsp-triage.ts` and `opsp-propose.ts` under `src/core/templates/workflows/`).
+The planning and build skills are decided to orient on the per-hat views and open a full record
+only for the decision they act on (`DEC-VIEWS-FIRST-LOAD`, superseding `DEC-015`;
+`DS-SURROGATE-BUDGET`). `compact plan --hat <hat> --json` tells them which sections to trust; where
+one is stale, unsealed or tampered they read its records instead, and they fall back to every record
+where the engine cannot run or no record declares a hat (`DEC-VIEWS-FIRST-LOAD`; observed in
+`opsp-apply.ts`, `opsp-explore.ts`, `opsp-triage.ts` and `opsp-propose.ts` under
+`src/core/templates/workflows/`). `architecture.md` and `DECISION-MAP.md` are not in that load; the
+map is opened only to work out a blast radius (`DEC-NO-DEFAULT-ARCHITECTURE-LOAD`).
 
 The CLI has one outbound network call: PostHog telemetry of the command path and version, which can
 be turned off with `OPENSPEC_TELEMETRY=0` or `DO_NOT_TRACK=1` (`src/telemetry/index.ts`,
@@ -320,8 +323,9 @@ its blast radius. There is no separate "which hat?" prompt (`DEC-CLASSIFY-IN-QUE
    `src/core/change-frame.ts`).
 2. **Read.** It reads the bars, the test files and the CI evidence. It never reads the
    implementation source, the design discussion or the ADR rationales (`DEC-040`, which supersedes
-   `DEC-033`). It refuses to run in a session that wrote the implementation or its tests
-   (`DEC-043`).
+   `DEC-033`). Of the views it reads only the owning hat's `## Posture` or `## Measures` section,
+   never a strategy block (`DEC-ATTEST-OWNING-SECTION`). It refuses to run in a session that wrote
+   the implementation or its tests (`DEC-043`).
 3. **Judge.** It records a posture, then either evidence (`met`) or exposure (anything else)
    (`DEC-041`). Evidence must be a CI artifact reference, and a bar that cannot be assessed before
    merge is attested `pending` and left for the next initiative that touches the area (`DEC-032`).
@@ -427,6 +431,9 @@ is not a record that constrains or decides (`src/core/initiatives.ts`).
     DECISION-MAP.md        decision tree, blast radius       DEC-026; src/core/decision-map.ts
 ```
 
+The skills load the views, not `architecture.md` or `DECISION-MAP.md`: the first is compiled from the
+same records as the views, and no check covers the second (`DEC-NO-DEFAULT-ARCHITECTURE-LOAD`).
+
 The manifest records, for each section, the content hashes of its records and its observed files,
 a combined input hash, and the hash of the rendered output. A changed input means the section is
 stale, and a changed output means it was tampered with (`DEC-010`). The observed fields are
@@ -449,17 +456,19 @@ No record decides anything about this layer. It is described here only as observ
 
 ## Open Loops
 
-8 loops the harvest reports for this hat, grouped by kind. Each is reported by `opensprint compact plan`, not inferred here; the record cited is where it closes.
+10 loops the harvest reports for this hat, grouped by kind. Each is reported by `opensprint compact plan`, not inferred here; the record cited is where it closes.
 
 ### `decision-unguarded` — a decision no rule cites
 
 - `DEC-005`
 - `DEC-008`
 - `DEC-013`
-- `DEC-015`
 - `DEC-017`
 - `DEC-020`
 - `DEC-031`
 - `DEC-032`
+- `DEC-ATTEST-OWNING-SECTION`
+- `DEC-NO-DEFAULT-ARCHITECTURE-LOAD`
+- `DEC-VIEWS-FIRST-LOAD`
 
 _No rule cites this decision._

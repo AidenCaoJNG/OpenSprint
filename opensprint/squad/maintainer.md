@@ -253,6 +253,14 @@ attestation is a review at bar altitude, and a handoff past merge          (DS-A
     opportunity: CI artifacts only (DEC-033's scope); the full diff
     threat:      tests unreadable without the source, or tests generated from the bars — the scope
                  is rethought, not quietly widened
+  → DEC-ATTEST-OWNING-SECTION (dev)   of the views, the attester reads only the owning
+                                      hat's posture or measures section
+    strength:    ADR rationale stays out; the attester knows the standard a posture deviates
+                 from; one section of context
+    weakness:    the read is heading-to-heading, which the instruction has to state precisely
+    opportunity: no view at all; the whole view
+    threat:      a posture or measures section that starts carrying rationale readmits what
+                 DEC-040 excludes; attesters needing another section means the shapes are wrong
   → DEC-041 (dev)   posture is the judgement; evidence and exposure are conditional on it
     strength:    one precise loop per verdict, and an unmet bar still reports
     weakness:    three branches where two unconditional checks would do

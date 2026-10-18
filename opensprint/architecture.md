@@ -1,12 +1,13 @@
 # Architecture
 
-> **How to read this document.** It is compiled from 26 active driver-specs and 54 active ADRs
-> (57 ADR files, three of them superseded). Every claim cites the record it derives from, inline.
+> **How to read this document.** It is compiled from 26 active driver-specs and 56 active ADRs
+> (60 ADR files, four of them superseded). Every claim cites the record it derives from, inline.
 >
-> **Nothing here is attested.** Thirteen driver-specs carry a `### Posture` verdict recorded on
-> 2026-10-11 by Ivan Lee: ten **partially met**, two **cannot assess**, one **not met**, and none
-> **met**. So no record is `attested`, and no sentence below is a present-tense claim about how the
-> running system behaves. A sentence citing a record id states what was **decided** (`DEC-021`,
+> **One record is attested.** Fourteen driver-specs carry a `### Posture` verdict. Thirteen were
+> recorded on 2026-10-11 by Ivan Lee: ten **partially met**, two **cannot assess**, one **not met**,
+> and none **met**; none of them carries evidence, so none is `attested`. `DS-SURROGATE-BUDGET` was
+> recorded **partially met** on 2026-10-18 with evidence, which makes it the one `attested` record.
+> No sentence below is a present-tense claim about how the running system behaves. A sentence citing a record id states what was **decided** (`DEC-021`,
 > `DS-ATTESTED-TRUTH`). Where a record carries a posture, that posture is given next to the decision,
 > because the gap between the two is the information.
 
@@ -65,7 +66,7 @@ are taken from each record. "—" means the record carries no `### Posture` verd
 |---|---|---|
 | `DS-FULL-COVERAGE` | specification and result cover product, maintainer, dev and devops | — |
 | `DS-DOCUMENTATION-AS-OUTPUT` | the compacted surrogate *is* the documentation; no second effort | — |
-| `DS-SURROGATE-BUDGET` | loading the surrogate must not consume the session budget; a compacted second tier of progressive discovery | — |
+| `DS-SURROGATE-BUDGET` | loading the surrogate must not consume the session budget; a compacted second tier of progressive discovery | **partially met** |
 | `DS-ATTESTED-TRUTH` | a compiled claim is present-tense only when a human asserted it with evidence | **partially met** |
 
 ### Posture
@@ -151,9 +152,14 @@ are cited.
 - **Open loops are the backlog.** Compact reports and triage decides, with no remediation workflow
   of its own (`DEC-007`). Rule links are harvested from code that cites record ids, not declared in
   the records (`DEC-013`).
-- **Read path deferred.** v1 does not change what `/opsp:explore` or `/opsp:apply` load. The
-  rule is to use the view to find your way and read the record before acting on it (`DEC-015`,
-  `DS-SURROGATE-BUDGET`).
+- **Views first, records on demand.** `/opsp:apply`, `/opsp:explore`, `/opsp:triage` and
+  `/opsp:propose` are decided to orient on the per-hat views their hats need and open a full record
+  only for the decision they act on (`DEC-VIEWS-FIRST-LOAD`, superseding `DEC-015`;
+  `DS-SURROGATE-BUDGET`). `compact plan` decides which sections to trust, and every record is read
+  only where the engine cannot run or the records predate hats (`DEC-VIEWS-FIRST-LOAD`).
+  `architecture.md` and `DECISION-MAP.md` leave the default load (`DEC-NO-DEFAULT-ARCHITECTURE-LOAD`).
+  *Posture:* `DS-SURROGATE-BUDGET` is **partially met** and attested: the load steps are asserted as
+  instruction text, and what an agent actually loads is not measured.
 
 ### 2. Hats, classification and view authorship
 
@@ -206,8 +212,9 @@ are cited.
   (`DEC-032`, `DS-CI-ATTESTATION`).
 - **What the attester reads.** The attester reads objective, goals, bars, **test files**, in-scope
   maintainer rows and CI artifacts. It never reads source, design discussion or ADR rationales
-  (`DEC-040`, superseding `DEC-033`). The session that wrote the implementation *or its tests* may not
-  attest (`DEC-043`). Attest first resolves and presents the change frame (source, base, subjects,
+  (`DEC-040`, superseding `DEC-033`). Of the views it reads only the owning hat's posture or
+  measures section, never a strategy block (`DEC-ATTEST-OWNING-SECTION`). The session that wrote the
+  implementation *or its tests* may not attest (`DEC-043`). Attest first resolves and presents the change frame (source, base, subjects,
   stat, never patch or bodies), and the operator confirms it before any bar is read
   (`DEC-ATTEST-CHANGE-FRAME`).
 - **The change questions** (door, blast radius and RACI for whatever no system handles) live on the
@@ -271,6 +278,7 @@ are cited.
 |---|---|---|
 | `DEC-012` | `DEC-016` | one primary hat plus an `agreements` hat → one or more hats, four hats |
 | `DEC-025` | `DEC-034` | explore persists the initiative → explore writes nothing; `/opsp:backlog` persists |
+| `DEC-015` | `DEC-VIEWS-FIRST-LOAD` | explore and apply load every record → the planning and build skills orient on the views and open a record only to act on it |
 | `DEC-033` | `DEC-040` | attester loads bar and CI evidence only → test files admitted; source, design and rationales still excluded |
 
 The next table lists amendments without a `superseded-by` field. Read each pair together.
@@ -318,9 +326,6 @@ These conflicts are reported, not resolved. Resolving any of them is a record ch
 - **The devops hat.** `DS-SELF-USE-SCOPE` says the `devops` hat is legitimately empty for this
   project. `DEC-029`, `DEC-030`, `DEC-032` and `DEC-COMPILE-ON-MILESTONE` declare `devops` among
   their hats.
-- **Do agents read views during apply?** `DEC-015` decides that apply does not load the views.
-  `DS-VIEW-AUTHORSHIP` and `DEC-COMPILE-ON-MILESTONE` justify milestone-boundary compiles on the
-  premise that agents read `dev`/`devops` views mid-initiative.
 - **Stakeholder entry point.** `DS-HATS-AS-CONTEXT` requires that a stakeholder without repository
   access can file a backlog item. `DEC-029` has `/opsp:backlog` create a worktree. `DEC-029` and
   `DS-SURROGATE-GIT-CONTRACT` both record this as unsolved.
@@ -487,8 +492,9 @@ attested.** A constraint here is a decision that binds. It does not report the r
    on instruction text only.
 
 7. **The attester is decided to read tests, not source.** Implementation source, design discussion
-   and ADR rationales stay out (`DEC-040`, superseding `DEC-033`). The session that authored the
-   implementation or its tests may not attest (`DEC-043`).
+   and ADR rationales stay out (`DEC-040`, superseding `DEC-033`), and of the views only the owning
+   hat's posture or measures section is read (`DEC-ATTEST-OWNING-SECTION`). The session that
+   authored the implementation or its tests may not attest (`DEC-043`).
    *Posture:* `DS-ATTEST-AS-REVIEW` is **partially met**. Its record says the Scope bar is
    "unassertable by any test in the suite" and that "an attester that reads source is not detected".
    `DS-HATS-AS-CONTEXT` is **partially met**, because excluding the implementation is instruction
